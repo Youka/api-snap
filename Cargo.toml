@@ -1,0 +1,51 @@
+# Reference: https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package]
+name = "api-snap"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+description = "An application which collects API documents by kubernetes service discovery and displays them in a web interface."
+homepage = "https://youka.dev/api-snap"
+repository = "https://github.com/Youka/api-snap"
+license = "Apache-2.0"
+keywords = ["kubernetes", "documentation", "openapi", "asyncapi"]
+categories = ["visualization"]
+publish = false
+
+[features]
+openapi-support = []
+asyncapi-support = []
+default = ["openapi-support", "asyncapi-support"]
+
+# Reference: https://doc.rust-lang.org/rustc/lints/listing/index.html
+[lints.rust]
+unsafe_code = "warn"
+
+# Reference: https://rust-lang.github.io/rust-clippy/stable/index.html
+[lints.clippy]
+undocumented_unsafe_blocks = "forbid"
+
+# Reference: https://doc.rust-lang.org/cargo/reference/profiles.html
+[profile.release]
+strip = true
+lto = true
+panic = "abort"
+codegen-units = 1
+
+# Reference: https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
+[dependencies]
+# Logging
+log = "0.4"
+env_logger = "0.10"
+# Data
+serde = { version = "1", features = ["derive"] }
+cached = "0.46"
+# Web
+actix-web = "4"
+actix-files = "0.6"
+mime = "0.3"
+awc = "3"
+# Kubernetes
+kube = "0.87"
+k8s-openapi = { version = "0.20", features = ["latest"] }

@@ -1,0 +1,64 @@
+<!-- Origin: https://github.com/asyncapi/asyncapi-react/blob/master/docs/usage/standalone-bundle.md -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AsyncAPI</title>
+        <link rel="icon" href="./favicon.ico">
+        <link rel="stylesheet" href="./default.min.css">
+        <script src="./index.js"></script>
+        <script>
+            function render_asyncapi(url) {
+                AsyncApiStandalone.render(
+                    {
+                        schema: {
+                            url,
+                            options: { method: "GET", mode: "cors" },
+                        },
+                        config: { show: { sidebar: true } },
+                    },
+                    document.getElementById("asyncapi")
+                );
+            }
+
+            window.onload = async function() {
+                const selectElement = document.getElementById("spec-select");
+                selectElement.addEventListener("change", () => render_asyncapi(selectElement.value));
+
+                for (const namedUrl of await (await fetch("urls")).json()) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = namedUrl.url;
+                    optionElement.appendChild(document.createTextNode(namedUrl.name));
+                    if (!selectElement.hasChildNodes()) {
+                        optionElement.setAttribute("selected", "");
+                        render_asyncapi(namedUrl.url);
+                    }
+                    selectElement.appendChild(optionElement);
+                }
+            }
+        </script>
+        <style>
+            #spec-select-container {
+                /* Position */
+                position: fixed;
+                top: 0;
+                right: 0;
+                z-index: 20;
+                /* Border */
+                padding: 0.5rem;
+                border-radius: 1rem;
+                /* Colors */
+                color: white;
+                background-color: #202020;
+                /* Text */
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="asyncapi"></div>
+        <span id="spec-select-container">
+            <label for="spec-select">Select a specification:</label><br>
+            <select id="spec-select"></select>
+        </span>
+    </body>
+</html>

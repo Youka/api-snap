@@ -1,0 +1,14 @@
+# IDE
+/.vscode/*
+!/.vscode/extensions.json
+
+# Environment variables
+.env
+
+# OSX
+.DS_Store
+
+# Output
+/third-party/*
+!/third-party/download.sh
+/target/
