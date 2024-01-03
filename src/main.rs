@@ -7,13 +7,13 @@ use std::{
     io::Result as IOResult
 };
 use actix_web::{
-    App,
-    HttpServer,
     main as actix_main,
     middleware::{
         Compress,
         Logger
-    }
+    },
+    App,
+    HttpServer
 };
 use env_logger::{
     init_from_env as log_init,

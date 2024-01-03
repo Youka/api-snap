@@ -9,6 +9,5 @@
 .DS_Store
 
 # Output
-/third-party/*
-!/third-party/download.sh
 /target/
+/third-party/

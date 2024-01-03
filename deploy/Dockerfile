@@ -5,20 +5,18 @@ ARG DEBIAN_NAME=bookworm
 
 ### Build image ###
 # Rust build environment (compatible to release image)
-FROM rust:$RUST_VERSION-$DEBIAN_NAME AS build
+FROM rust:$RUST_VERSION-slim-$DEBIAN_NAME AS build
 
 # Individual directory for building
 WORKDIR /api-snap
 
 # Build the application & store results out of temporary cache directories
 RUN --mount=type=bind,source=src,target=src \
-    --mount=type=bind,source=third-party/download.sh,target=third-party/download.sh \
     --mount=type=bind,source=build.rs,target=build.rs \
     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
     --mount=type=cache,target=/api-snap/target/ \
-    --mount=type=cache,target=/api-snap/third-party/asyncapi-react/ \
-    --mount=type=cache,target=/api-snap/third-party/swagger-ui/ \
+    --mount=type=cache,target=/api-snap/third-party/ \
     --mount=type=cache,target=/usr/local/cargo/registry/ \
     cargo build --release --locked && \
     mkdir release && \

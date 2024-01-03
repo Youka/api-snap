@@ -1,5 +1,5 @@
 use actix_web::{
-    Responder,
+    http::header::ContentType,
     web::{
         get,
         Json,
@@ -7,10 +7,11 @@ use actix_web::{
         ServiceConfig
     },
     HttpResponse,
-    http::header::ContentType
+    Responder
 };
 use actix_files::Files;
 use serde::Serialize;
+use crate::constants;
 
 pub fn configure_asyncapi_services(service_config: &mut ServiceConfig) {
     service_config
@@ -18,7 +19,7 @@ pub fn configure_asyncapi_services(service_config: &mut ServiceConfig) {
         .service(redirect("/asyncapi/", "/asyncapi/index.html"))
         .route("/asyncapi/index.html", get().to(get_asyncapi_index))
         .route("/asyncapi/urls", get().to(get_asyncapi_urls))
-        .service(Files::new("/asyncapi/", "./third-party/asyncapi-react/"));
+        .service(Files::new("/asyncapi/", concat!(constants::third_party_dir!(), "/asyncapi-react/")));
 }
 
 async fn get_asyncapi_index() -> impl Responder {

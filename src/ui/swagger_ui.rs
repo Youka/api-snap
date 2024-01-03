@@ -1,20 +1,23 @@
+use actix_files::Files;
 use actix_web::{
-    Responder,
+    http::header::ContentType,
     web::{
         get,
         Json,
         ServiceConfig
-    }, HttpResponse, http::header::ContentType
+    },
+    HttpResponse,
+    Responder
 };
-use actix_files::Files;
 use mime::APPLICATION_JAVASCRIPT;
 use serde::Serialize;
+use crate::constants;
 
 pub fn configure_swagger_ui_services(service_config: &mut ServiceConfig) {
     service_config
         .route("/swagger-ui/swagger-initializer.js", get().to(get_swagger_initializer))
         .route("/swagger-ui/urls", get().to(get_swagger_ui_urls))
-        .service(Files::new("/swagger-ui/", "./third-party/swagger-ui/").redirect_to_slash_directory().index_file("index.html"));
+        .service(Files::new("/swagger-ui/", concat!(constants::third_party_dir!(), "/swagger-ui/")).redirect_to_slash_directory().index_file("index.html"));
 }
 
 async fn get_swagger_initializer() -> impl Responder {
