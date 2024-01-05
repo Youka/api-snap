@@ -25,7 +25,7 @@ pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
 async fn get_swagger_initializer() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType(APPLICATION_JAVASCRIPT))
-        .body(include_str!("swagger-initializer.js"))
+        .body(include_str!("assets/swagger-initializer.js"))
 }
 
 async fn get_swagger_ui_urls() -> impl Responder {

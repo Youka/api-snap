@@ -1,0 +1,42 @@
+use std::sync::OnceLock;
+use actix_web::{
+    http::header::ContentType,
+    web::{
+        get,
+        Bytes,
+        ServiceConfig
+    },
+    HttpResponse,
+    Responder
+};
+use crate::constants;
+
+static INDEX_HTML: OnceLock<String> = OnceLock::new();
+
+pub fn configure_index_endpoints(service_config: &mut ServiceConfig) {
+    service_config
+        .route("/", get().to(get_index_html))
+        .route("/favicon.png", get().to(get_index_favicon));
+}
+
+async fn get_index_html() -> impl Responder {
+    HttpResponse::Ok()
+        .content_type(ContentType::html())
+        .body(INDEX_HTML.get_or_init(|| {
+            [
+                ("APP_NAME", constants::APP_NAME),
+                ("APP_VERSION", constants::APP_VERSION)
+            ]
+            .into_iter()
+            .fold(
+                include_str!("assets/index.html").to_owned(),
+                |body, (key, value)| body.replace(&format!("{{{{{}}}}}", key), value)
+            )
+        }).as_str())
+}
+
+async fn get_index_favicon() -> impl Responder {
+    HttpResponse::Ok()
+        .content_type(ContentType::png())
+        .body(Bytes::from_static(include_bytes!("assets/index-favicon.png")))
+}

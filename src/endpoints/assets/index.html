@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{{APP_NAME}}</title>
+        <link rel="icon" href="./favicon.png">
+    </head>
+    <body>
+        <header>
+            <h1>Endpoints</h1>
+        </header>
+        <main>
+            <section>
+                <h2>APIs</h2>
+                <ul>
+                    <li><a href="./swagger-ui">/swagger-ui</a></li>
+                    <li><a href="./asyncapi">/asyncapi</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Status</h2>
+                <ul>
+                    <li><a href="./metrics">/metrics</a></li>
+                    <li><a href="./health/live">/health/live</a></li>
+                    <li><a href="./health/ready">/health/ready</a></li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <hr>
+            <b>v{{APP_VERSION}}</b>
+        </footer>
+    </body>
+</html>

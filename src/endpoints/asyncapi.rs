@@ -24,7 +24,7 @@ pub fn configure_asyncapi_endpoints(service_config: &mut ServiceConfig) {
 async fn get_asyncapi_index() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::html())
-        .body(include_str!("asyncapi-index.html"))
+        .body(include_str!("assets/asyncapi-index.html"))
 }
 
 async fn get_asyncapi_urls() -> impl Responder {

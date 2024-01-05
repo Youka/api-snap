@@ -49,6 +49,7 @@ async fn main() -> IOResult<()> {
             .configure(endpoints::asyncapi::configure_asyncapi_endpoints)
             .configure(endpoints::swagger_ui::configure_swagger_ui_endpoints)
             .configure(endpoints::health::configure_health_endpoints)
+            .configure(endpoints::index::configure_index_endpoints)
     )
     .bind((addr, port))?
     .run()
