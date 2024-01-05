@@ -3,6 +3,7 @@ use actix_web::{
     http::header::ContentType,
     web::{
         get,
+        redirect,
         Json,
         ServiceConfig
     },
@@ -15,9 +16,10 @@ use crate::constants;
 
 pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
     service_config
+        .service(redirect("/swagger-ui", "/swagger-ui/index.html"))
         .route("/swagger-ui/swagger-initializer.js", get().to(get_swagger_initializer))
         .route("/swagger-ui/urls", get().to(get_swagger_ui_urls))
-        .service(Files::new("/swagger-ui/", concat!(constants::third_party_dir!(), "/swagger-ui/")).redirect_to_slash_directory().index_file("index.html"));
+        .service(Files::new("/swagger-ui", concat!(constants::third_party_dir!(), "/swagger-ui/")));
 }
 
 async fn get_swagger_initializer() -> impl Responder {

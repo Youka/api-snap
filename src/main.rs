@@ -11,7 +11,8 @@ use actix_web::{
     main as actix_main,
     middleware::{
         Compress,
-        Logger
+        Logger,
+        NormalizePath
     },
     App,
     HttpServer
@@ -43,6 +44,7 @@ async fn main() -> IOResult<()> {
         App::new()
             .wrap(Compress::default())
             .wrap(Logger::default())
+            .wrap(NormalizePath::trim())
             .wrap(metrics.clone())
             .configure(endpoints::asyncapi::configure_asyncapi_endpoints)
             .configure(endpoints::swagger_ui::configure_swagger_ui_endpoints)

@@ -15,11 +15,10 @@ use crate::constants;
 
 pub fn configure_asyncapi_endpoints(service_config: &mut ServiceConfig) {
     service_config
-        .service(redirect("/asyncapi", "/asyncapi/"))
-        .service(redirect("/asyncapi/", "/asyncapi/index.html"))
+        .service(redirect("/asyncapi", "/asyncapi/index.html"))
         .route("/asyncapi/index.html", get().to(get_asyncapi_index))
         .route("/asyncapi/urls", get().to(get_asyncapi_urls))
-        .service(Files::new("/asyncapi/", concat!(constants::third_party_dir!(), "/asyncapi-react/")));
+        .service(Files::new("/asyncapi", concat!(constants::third_party_dir!(), "/asyncapi-react/")));
 }
 
 async fn get_asyncapi_index() -> impl Responder {

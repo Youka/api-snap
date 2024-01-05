@@ -10,8 +10,7 @@ use actix_web::{
 
 pub fn configure_health_endpoints(service_config: &mut ServiceConfig) {
     service_config
-        .service(redirect("/health", "/health/"))
-        .service(redirect("/health/", "/health/live"))
+        .service(redirect("/health", "/health/live"))
         .route("/health/live", get().to(get_health_live))
         .route("/health/ready", get().to(get_health_ready));
 }
