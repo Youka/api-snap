@@ -46,6 +46,9 @@ actix-web = "4"
 actix-files = "0.6"
 mime = "0.3"
 awc = "3"
+# Metrics
+actix-web-prom = "0.7"
+prometheus = "0.13"
 # Kubernetes
 kube = "0.87"
 k8s-openapi = { version = "0.20", features = ["latest"] }
