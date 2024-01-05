@@ -13,7 +13,7 @@ use mime::APPLICATION_JAVASCRIPT;
 use serde::Serialize;
 use crate::constants;
 
-pub fn configure_swagger_ui_services(service_config: &mut ServiceConfig) {
+pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
     service_config
         .route("/swagger-ui/swagger-initializer.js", get().to(get_swagger_initializer))
         .route("/swagger-ui/urls", get().to(get_swagger_ui_urls))

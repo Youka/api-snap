@@ -13,7 +13,7 @@ use actix_files::Files;
 use serde::Serialize;
 use crate::constants;
 
-pub fn configure_asyncapi_services(service_config: &mut ServiceConfig) {
+pub fn configure_asyncapi_endpoints(service_config: &mut ServiceConfig) {
     service_config
         .service(redirect("/asyncapi", "/asyncapi/"))
         .service(redirect("/asyncapi/", "/asyncapi/index.html"))

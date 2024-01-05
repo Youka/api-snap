@@ -1,6 +1,6 @@
-mod k8s;
 mod constants;
-mod ui;
+mod endpoints;
+mod k8s;
 mod utils;
 
 use std::{
@@ -16,12 +16,10 @@ use actix_web::{
     App,
     HttpServer
 };
-use actix_web_prom::PrometheusMetricsBuilder;
 use env_logger::{
     init_from_env as log_init,
     Env as LogEnvironment
 };
-use prometheus::default_registry;
 
 #[actix_main]
 async fn main() -> IOResult<()> {
@@ -35,15 +33,9 @@ async fn main() -> IOResult<()> {
         .ok().and_then(|var| var.parse().ok())
         .unwrap_or(constants::DEFAULT_PORT);
 
-    // Define prometheus metrics provider
-    let metrics = PrometheusMetricsBuilder::new(&constants::app_namespace!())
-        .const_labels(utils::labels_to_map(&[
-            ("app_name", constants::APP_NAME),
-            ("app_version", constants::APP_VERSION)
-        ]))
-        .endpoint("/metrics")
-        .registry(default_registry().clone())
-        .build().expect("Initialize prometheus metrics structure.");
+    // Initialize middleware
+    let metrics = endpoints::prometheus::build_prometheus_metrics_middleware()
+        .expect("Initialize prometheus metrics structure.");
 
     // Start web server
     log::info!("Starting web server on '{}:{}'", addr, port);
@@ -52,8 +44,8 @@ async fn main() -> IOResult<()> {
             .wrap(Compress::default())
             .wrap(Logger::default())
             .wrap(metrics.clone())
-            .configure(ui::swagger_ui::configure_swagger_ui_services)
-            .configure(ui::asyncapi::configure_asyncapi_services)
+            .configure(endpoints::swagger_ui::configure_swagger_ui_endpoints)
+            .configure(endpoints::asyncapi::configure_asyncapi_endpoints)
     )
     .bind((addr, port))?
     .run()
