@@ -4,6 +4,7 @@ mod k8s;
 mod utils;
 
 use std::io::Result as IOResult;
+use actix_cors::Cors;
 use actix_web::{
     main as actix_main,
     middleware::{
@@ -41,6 +42,10 @@ async fn main() -> IOResult<()> {
             .wrap(Compress::default())
             .wrap(Logger::default())
             .wrap(NormalizePath::trim())
+            .wrap(Cors::default()
+                .allow_any_origin()
+                .send_wildcard()
+                .allowed_methods(["GET"]))
             .wrap(metrics.clone())
             .configure(endpoints::asyncapi::configure_asyncapi_endpoints)
             .configure(endpoints::swagger_ui::configure_swagger_ui_endpoints)
