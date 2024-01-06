@@ -3,6 +3,27 @@
     <head>
         <title>{{APP_NAME}}</title>
         <link rel="icon" href="./favicon.png">
+        <style>
+            body {
+                background-color: #E0E0E0;
+                text-align: center;
+            }
+
+            body main {
+                display: inline-block;
+                text-align: initial;
+            }
+
+            body main h2 {
+                margin-bottom: 0;
+            }
+
+            body main ul {
+                padding: 0;
+                list-style: none;
+                margin-top: 0;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -27,7 +48,7 @@
         </main>
         <footer>
             <hr>
-            <b>v{{APP_VERSION}}</b>
+            <b>{{APP_NAME}} v{{APP_VERSION}}</b>
         </footer>
     </body>
 </html>

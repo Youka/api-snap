@@ -3,10 +3,7 @@ mod endpoints;
 mod k8s;
 mod utils;
 
-use std::{
-    env::var as env_var,
-    io::Result as IOResult
-};
+use std::io::Result as IOResult;
 use actix_web::{
     main as actix_main,
     middleware::{
@@ -28,10 +25,9 @@ async fn main() -> IOResult<()> {
     log_init(LogEnvironment::default().default_filter_or("info"));
 
     // Read configuration by environment variables
-    let addr = env_var(constants::env_var_prefix!() + "ADDRESS")
+    let address = utils::env_var_as_string("ADDRESS")
         .unwrap_or(constants::DEFAULT_ADDRESS.to_owned());
-    let port = env_var(constants::env_var_prefix!() + "PORT")
-        .ok().and_then(|var| var.parse().ok())
+    let port = utils::env_var_as_u16("PORT")
         .unwrap_or(constants::DEFAULT_PORT);
 
     // Initialize middleware
@@ -39,7 +35,7 @@ async fn main() -> IOResult<()> {
         .expect("Initialize prometheus metrics structure.");
 
     // Start web server
-    log::info!("Starting web server on '{}:{}'", addr, port);
+    log::info!("Starting web server on '{}:{}'", address, port);
     HttpServer::new(move ||
         App::new()
             .wrap(Compress::default())
@@ -51,7 +47,7 @@ async fn main() -> IOResult<()> {
             .configure(endpoints::health::configure_health_endpoints)
             .configure(endpoints::index::configure_index_endpoints)
     )
-    .bind((addr, port))?
+    .bind((address, port))?
     .run()
     .await
 }
