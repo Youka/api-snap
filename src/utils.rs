@@ -2,6 +2,9 @@ use std::{
     collections::HashMap,
     env::var as env_var
 };
+use actix_web::web::Bytes;
+use awc::Client;
+use log::warn;
 use crate::constants;
 
 pub fn labels_to_map(labels: &[(&str, &str)]) -> HashMap<String,String> {
@@ -23,4 +26,20 @@ pub fn process_template(template: &str, vars: &[(&str,&str)]) -> String {
         template.to_owned(),
         |output, (key, value)| output.replace(&format!("{{{{{}}}}}", key), value)
     )
+}
+
+pub async fn http_get(url: &str) -> Option<Bytes> {
+    match Client::new().get(url).send().await {
+        Ok(mut response) => match response.body().await {
+            Ok(body) => Some(body),
+            Err(err) => {
+                warn!("Http body invalid: {} => {}", url, err);
+                None
+            }
+        },
+        Err(err) => {
+            warn!("Http get request failed: {} => {}", url, err);
+            None
+        }
+    }
 }
