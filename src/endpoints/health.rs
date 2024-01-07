@@ -1,12 +1,16 @@
 use actix_web::{
+    http::StatusCode,
     web::{
         get,
         redirect,
+        Data,
+        Json,
         ServiceConfig
     },
-    HttpResponse,
-    Responder
+    Responder,
 };
+use serde::Serialize;
+use crate::k8s_client::K8sClient;
 
 pub fn configure_health_endpoints(service_config: &mut ServiceConfig) {
     service_config
@@ -16,9 +20,27 @@ pub fn configure_health_endpoints(service_config: &mut ServiceConfig) {
 }
 
 async fn get_health_live() -> impl Responder {
-    HttpResponse::Ok()
+    ""
 }
 
-async fn get_health_ready() -> impl Responder {
-    HttpResponse::Ok()
+async fn get_health_ready(k8s_client: Data<K8sClient>) -> impl Responder {
+    let mut is_ready = true;
+
+    let k8s_status = match k8s_client.get_server_version().await {
+        Ok(info) => format!("{:?}", info),
+        Err(err) => {
+            is_ready = false;
+            err.to_string()
+        }
+    };
+
+    (
+        Json(ReadyStatus { k8s: k8s_status }),
+        if is_ready { StatusCode::OK } else { StatusCode::SERVICE_UNAVAILABLE }
+    )
+}
+
+#[derive(Serialize)]
+struct ReadyStatus {
+    k8s: String
 }

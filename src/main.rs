@@ -1,6 +1,6 @@
 mod constants;
 mod endpoints;
-mod k8s;
+mod k8s_client;
 mod utils;
 
 use std::io::Result as IOResult;
@@ -12,6 +12,7 @@ use actix_web::{
         Logger,
         NormalizePath
     },
+    web::Data,
     App,
     HttpServer
 };
@@ -31,14 +32,17 @@ async fn main() -> IOResult<()> {
     let port = utils::env_var_as_u16("PORT")
         .unwrap_or(constants::DEFAULT_PORT);
 
-    // Initialize middleware
+    // Initialize shared web resources
     let metrics = endpoints::prometheus::build_prometheus_metrics_middleware()
         .expect("Initialize prometheus metrics structure.");
+    let k8s_client = k8s_client::K8sClient::new().await
+        .expect("Load kubeconfig with default context or service configuration by incluster environment variables.");
 
     // Start web server
     log::info!("Starting web server on '{}:{}'", address, port);
     HttpServer::new(move ||
         App::new()
+            .app_data(Data::new(k8s_client.clone()))
             .wrap(Compress::default())
             .wrap(Logger::default())
             .wrap(NormalizePath::trim())
