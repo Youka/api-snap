@@ -64,7 +64,7 @@ fn download_asyncapi_react(asyncapi_react_version: &str) {
         PathBuf::from(THIRD_PARTY_ASYNCAPI_REACT_DIR).join("index.js")
     );
     download_file(
-        "https://www.asyncapi.com/favicon.ico",
+        "https://raw.githubusercontent.com/asyncapi/website/master/public/favicon.ico",
         PathBuf::from(THIRD_PARTY_ASYNCAPI_REACT_DIR).join("favicon.ico")
     );
 }

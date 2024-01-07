@@ -36,7 +36,7 @@ async fn main() -> IOResult<()> {
     let metrics = endpoints::prometheus::build_prometheus_metrics_middleware()
         .expect("Initialize prometheus metrics structure.");
     let k8s_client = k8s_client::K8sClient::new().await
-        .expect("Load kubeconfig with default context or service configuration by incluster environment variables.");
+        .expect("Load local kubeconfig with default context or service configuration by in-cluster environment variables.");
 
     // Start web server
     log::info!("Starting web server on '{}:{}'", address, port);
@@ -57,6 +57,5 @@ async fn main() -> IOResult<()> {
             .configure(endpoints::index::configure_index_endpoints)
     )
     .bind((address, port))?
-    .run()
-    .await
+    .run().await
 }

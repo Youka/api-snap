@@ -14,6 +14,8 @@ Commands:
 * `docker run -it --rm -p 8080:80 --name api-snap api-snap:0.1.0`
 
 Environment variables:
+* `API_SNAP_ADDRESS`
+* `API_SNAP_PORT`
 * `RUST_LOG`
 * `KUBECONFIG`
 
