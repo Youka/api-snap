@@ -2,7 +2,10 @@ use std::{
     collections::HashMap,
     env::var as env_var
 };
-use actix_web::web::Bytes;
+use actix_web::{
+    web::Bytes,
+    HttpRequest
+};
 use awc::Client;
 use log::warn;
 use crate::constants;
@@ -42,4 +45,14 @@ pub async fn http_get(url: &str) -> Option<Bytes> {
             None
         }
     }
+}
+
+pub fn extract_http_url(request: HttpRequest) -> String {
+    let connection_info = request.connection_info();
+    format!(
+        "{}://{}{}",
+        connection_info.scheme(),
+        connection_info.host(),
+        request.path()
+    )
 }
