@@ -16,6 +16,7 @@ use actix_web::{
     App,
     HttpServer
 };
+use dotenvy::dotenv;
 use env_logger::{
     init_from_env as log_init,
     Env as LogEnvironment
@@ -23,6 +24,11 @@ use env_logger::{
 
 #[actix_main]
 async fn main() -> IOResult<()> {
+    // Load environment variables from file
+    if let Ok(path) = dotenv() {
+        println!("Loaded .env file: {}", path.to_string_lossy());
+    }
+
     // Initialize logging interface by environment variables
     log_init(LogEnvironment::default().default_filter_or("info"));
 

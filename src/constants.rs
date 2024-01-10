@@ -8,10 +8,11 @@ pub const DEFAULT_PORT: u16 = 8080;
 
 // Environment
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }
-pub(crate) use env_var_prefix;
-
 macro_rules! app_namespace { () => { env!("CARGO_PKG_NAME").to_lowercase().replace("-", "") } }
-pub(crate) use app_namespace;
-
 macro_rules! third_party_dir { () => { "third-party" } }
-pub(crate) use third_party_dir;
+
+pub(crate) use {
+    app_namespace,
+    env_var_prefix,
+    third_party_dir
+};

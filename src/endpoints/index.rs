@@ -26,10 +26,13 @@ async fn get_index_html() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(INDEX_HTML.get_or_init(||
-            utils::process_template(include_str!("assets/index.template.html"), &[
-                ("APP_NAME", constants::APP_NAME),
-                ("APP_VERSION", constants::APP_VERSION)
-            ])
+            utils::process_template(
+                include_str!("assets/index.template.html"),
+                &[
+                    ("APP_NAME", constants::APP_NAME),
+                    ("APP_VERSION", constants::APP_VERSION)
+                ]
+            )
         ).as_str())
 }
 
