@@ -2,11 +2,15 @@
 /.vscode/*
 !/.vscode/extensions.json
 
-# Environment variables
-.env
-
 # OSX
 .DS_Store
+
+# Environment variables
+/.env
+
+# Temporary
+tmp/
+*.tmp.*
 
 # Output
 /target/
