@@ -12,6 +12,10 @@ Commands:
 * `cargo build --release`
 * `docker build -t api-snap:0.1.0 -f deploy/Dockerfile .`
 * `docker run -it --rm -p 8080:80 --name api-snap api-snap:0.1.0`
+* ```sh
+  kubectl apply -f tests/k8s_test_namespaces.yml
+  kubectl apply -f tests/k8s_test_resources.yml
+  ```
 
 Environment variables:
 * `API_SNAP_ADDRESS`
