@@ -41,6 +41,7 @@ env_logger = "0.10"
 # Data
 serde = { version = "1", features = ["derive"] }
 cached = { version = "0.46", features = ["async"]}
+anyhow = "1"
 dotenvy = "0.15"
 # Web
 actix-web = "4"
