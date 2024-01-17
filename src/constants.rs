@@ -5,6 +5,7 @@ pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
 // Web
 pub const DEFAULT_ADDRESS: &str = "127.0.0.1";
 pub const DEFAULT_PORT: u16 = 8080;
+pub const DEFAULT_CLIENT_TIMEOUT: u16 = 30;
 
 // Environment
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }

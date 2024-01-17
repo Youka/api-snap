@@ -40,9 +40,9 @@ async fn main() -> IOResult<()> {
 
     // Initialize shared web resources
     let metrics = endpoints::prometheus::build_prometheus_metrics_middleware()
-        .expect("Initialize prometheus metrics structure.");
+        .expect("Initialize prometheus metrics structure");
     let k8s_client = k8s_client::K8sClient::new().await
-        .expect("Load local kubeconfig with default context or service configuration by in-cluster environment variables.");
+        .expect("Initialize kubernetes client");
 
     // Start web server
     log::info!("Starting web server on '{}:{}'", address, port);

@@ -20,6 +20,7 @@ Commands:
 Environment variables:
 * `API_SNAP_ADDRESS`
 * `API_SNAP_PORT`
+* `API_SNAP_CLIENT_TIMEOUT`
 * `RUST_LOG`
 * `KUBECONFIG`
 

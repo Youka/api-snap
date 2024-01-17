@@ -39,7 +39,7 @@ async fn get_swagger_initializer() -> impl Responder {
 
 async fn get_swagger_ui_urls(request: HttpRequest) -> impl Responder {
     let url = utils::extract_http_url(request);
-    let base_url = url.strip_suffix("/urls").expect("Http request matches route registration.");
+    let base_url = url.strip_suffix("/urls").expect("Http request matches route registration");
     Json([
         SwaggerUiUrl {
             name: "Petstore v2".to_owned(),

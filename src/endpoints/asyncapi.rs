@@ -38,7 +38,7 @@ async fn get_asyncapi_index() -> impl Responder {
 
 async fn get_asyncapi_urls(request: HttpRequest) -> impl Responder {
     let url = utils::extract_http_url(request);
-    let base_url = url.strip_suffix("/urls").expect("Http request matches route registration.");
+    let base_url = url.strip_suffix("/urls").expect("Http request matches route registration");
     Json([
         AsyncApiUrl {
             name: "Streetlights Kafka API".to_owned(),
