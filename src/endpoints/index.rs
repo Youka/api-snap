@@ -11,7 +11,7 @@ use actix_web::{
 };
 use crate::{
     constants,
-    utils
+    utils::string::process_template
 };
 
 static INDEX_HTML: OnceLock<String> = OnceLock::new();
@@ -26,7 +26,7 @@ async fn get_index_html() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(INDEX_HTML.get_or_init(||
-            utils::process_template(
+            process_template(
                 include_str!("assets/index.template.html"),
                 &[
                     ("APP_NAME", constants::APP_NAME),

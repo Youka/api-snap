@@ -19,7 +19,10 @@ use serde::{
 };
 use crate::{
     constants,
-    utils
+    utils::http::{
+        extract_http_url,
+        http_get
+    }
 };
 
 pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
@@ -38,7 +41,7 @@ async fn get_swagger_initializer() -> impl Responder {
 }
 
 async fn get_swagger_ui_urls(request: HttpRequest) -> impl Responder {
-    let url = utils::extract_http_url(request);
+    let url = extract_http_url(request);
     let base_url = url.strip_suffix("/urls").expect("Http request matches route registration");
     Json([
         SwaggerUiUrl {
@@ -55,9 +58,9 @@ async fn get_swagger_ui_urls(request: HttpRequest) -> impl Responder {
 async fn get_swagger_document(query: Query<DocumentQuery>) -> impl Responder {
     match query.into_inner() {
         DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "petstore" =>
-            utils::http_get("https://petstore.swagger.io/v2/swagger.json").await,
+            http_get("https://petstore.swagger.io/v2/swagger.json").await,
         DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "petstore3" =>
-            utils::http_get("https://petstore3.swagger.io/api/v3/openapi.json").await,
+            http_get("https://petstore3.swagger.io/api/v3/openapi.json").await,
         _ => None
     }
 }

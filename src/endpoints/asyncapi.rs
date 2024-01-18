@@ -18,7 +18,10 @@ use serde::{
 };
 use crate::{
     constants,
-    utils
+    utils::http::{
+        extract_http_url,
+        http_get
+    }
 };
 
 pub fn configure_asyncapi_endpoints(service_config: &mut ServiceConfig) {
@@ -37,7 +40,7 @@ async fn get_asyncapi_index() -> impl Responder {
 }
 
 async fn get_asyncapi_urls(request: HttpRequest) -> impl Responder {
-    let url = utils::extract_http_url(request);
+    let url = extract_http_url(request);
     let base_url = url.strip_suffix("/urls").expect("Http request matches route registration");
     Json([
         AsyncApiUrl {
@@ -54,9 +57,9 @@ async fn get_asyncapi_urls(request: HttpRequest) -> impl Responder {
 async fn get_asyncapi_document(query: Query<DocumentQuery>) -> impl Responder {
     match query.into_inner() {
         DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "streetlights_kafka" =>
-            utils::http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-kafka-asyncapi.yml").await,
+            http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-kafka-asyncapi.yml").await,
         DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "streetlights_mqtt" =>
-            utils::http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-mqtt-asyncapi.yml").await,
+            http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-mqtt-asyncapi.yml").await,
         _ => None
     }
 }

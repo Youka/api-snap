@@ -33,9 +33,9 @@ async fn main() -> IOResult<()> {
     log_init(LogEnvironment::default().default_filter_or("info"));
 
     // Read configuration by environment variables
-    let address = utils::env_var_as_string("ADDRESS")
+    let address = utils::env::env_var_as_string("ADDRESS")
         .unwrap_or(constants::DEFAULT_ADDRESS.to_owned());
-    let port = utils::env_var_as_u16("PORT")
+    let port = utils::env::env_var_as_u16("PORT")
         .unwrap_or(constants::DEFAULT_PORT);
 
     // Initialize shared web resources
