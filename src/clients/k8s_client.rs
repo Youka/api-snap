@@ -1,4 +1,5 @@
 use anyhow::{
+    anyhow,
     bail,
     Result as AnyResult
 };
@@ -17,7 +18,10 @@ use kube::{
 use log::debug;
 use crate::{
     constants,
-    utils::env::env_var_as_u16
+    utils::{
+        env::env_var_as_u16,
+        string::LoggedParse
+    }
 };
 
 #[derive(Clone)]
@@ -67,6 +71,44 @@ impl K8sClient {
                 })
                 .collect()
         )
+    }
+
+    pub async fn get_service_url_by_annotated_port_and_path(
+        &self,
+        namespace: &str, name: &str,
+        port_annotation: &str, default_port: u16,
+        path_annotation: &str, default_path: &str
+    ) -> AnyResult<String> {
+        let service = Api::<Service>::namespaced(self.client.clone(), namespace)
+            .get(name).await?;
+
+        let service_annotations = service.annotations();
+        let service_spec = service.spec.as_ref()
+            .ok_or(anyhow!("Service '{}/{}' missing specification", namespace, name))?;
+
+        let mut port = service_annotations.get(port_annotation)
+            .and_then(|var| var.logged_parse(&format!("Service '{}/{}' port annotation '{}={}'", namespace, name, port_annotation, var)))
+            .unwrap_or(default_port);
+        let path = service_annotations.get(path_annotation)
+            .map(|path| path.as_str())
+            .unwrap_or(default_path);
+        let host = if self.incluster {
+            service_spec.cluster_ip.as_ref()
+                .ok_or(anyhow!("Service '{}/{}' missing cluster ip", namespace, name))?
+        } else {
+            if service_spec.type_ != Some("NodePort".to_owned()) {
+                bail!("Service '{}/{}' requires to be of type NodePort for non-incluster communication", namespace, name);
+            }
+
+            // TODO: update port by NodePort of fitting internal port
+
+            service_spec.ports.as_ref()
+                .ok_or(anyhow!("Service '{}/{}' requires to have ports for non-incluster communication", namespace, name));
+
+            port = 0;//service_spec.ports;
+            "localhost"
+        };
+        Ok(format!("http://{}:{}{}", host, port, path))
     }
 }
 

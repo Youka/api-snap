@@ -10,7 +10,7 @@ use actix_web::{
     Responder,
 };
 use serde::Serialize;
-use crate::k8s_client::K8sClient;
+use crate::clients::k8s_client::K8sClient;
 
 pub fn configure_health_endpoints(service_config: &mut ServiceConfig) {
     service_config

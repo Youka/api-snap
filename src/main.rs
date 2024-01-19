@@ -1,6 +1,6 @@
+mod clients;
 mod constants;
 mod endpoints;
-mod k8s_client;
 mod utils;
 
 use std::io::Result as IOResult;
@@ -41,7 +41,7 @@ async fn main() -> IOResult<()> {
     // Initialize shared web resources
     let metrics = endpoints::prometheus::build_prometheus_metrics_middleware()
         .expect("Initialize prometheus metrics structure");
-    let k8s_client = k8s_client::K8sClient::new().await
+    let k8s_client = clients::k8s_client::K8sClient::new().await
         .expect("Initialize kubernetes client");
 
     // Start web server
