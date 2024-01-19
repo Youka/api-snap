@@ -1,5 +1,5 @@
 mod clients;
-mod constants;
+mod config;
 mod endpoints;
 mod utils;
 
@@ -32,11 +32,9 @@ async fn main() -> IOResult<()> {
     // Initialize logging interface by environment variables
     log_init(LogEnvironment::default().default_filter_or("info"));
 
-    // Read configuration by environment variables
-    let address = utils::env::env_var_as_string("ADDRESS")
-        .unwrap_or(constants::DEFAULT_ADDRESS.to_owned());
-    let port = utils::env::env_var_as_u16("PORT")
-        .unwrap_or(constants::DEFAULT_PORT);
+    // Read configuration
+    let address = config::get_address();
+    let port = config::get_port();
 
     // Initialize shared web resources
     let metrics = endpoints::metrics::build_prometheus_metrics_middleware()

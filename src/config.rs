@@ -1,11 +1,8 @@
+use crate::utils::env;
+
 // Project
 pub const APP_NAME: &str = env!("CARGO_PKG_NAME");
 pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
-
-// Web
-pub const DEFAULT_ADDRESS: &str = "127.0.0.1";
-pub const DEFAULT_PORT: u16 = 8080;
-pub const DEFAULT_CLIENT_TIMEOUT: u16 = 30;
 
 // Environment
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }
@@ -17,3 +14,14 @@ pub(crate) use {
     env_var_prefix,
     third_party_dir
 };
+
+// Web
+pub fn get_address() -> String {
+    env::env_var_as_string(&(env_var_prefix!() + "ADDRESS")).unwrap_or("127.0.0.1".to_owned())
+}
+pub fn get_port() -> u16 {
+    env::env_var_as_u16(&(env_var_prefix!() + "PORT")).unwrap_or(8080)
+}
+pub fn get_client_timeout() -> u16 {
+    env::env_var_as_u16(&(env_var_prefix!() + "CLIENT_TIMEOUT")).unwrap_or(30)
+}

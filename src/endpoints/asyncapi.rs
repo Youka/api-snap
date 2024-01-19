@@ -17,7 +17,7 @@ use serde::{
     Serialize
 };
 use crate::{
-    constants,
+    config,
     utils::http::{
         extract_http_url,
         http_get
@@ -30,7 +30,7 @@ pub fn configure_asyncapi_endpoints(service_config: &mut ServiceConfig) {
         .route("/asyncapi/index.html", get().to(get_asyncapi_index))
         .route("/asyncapi/urls", get().to(get_asyncapi_urls))
         .route("/asyncapi/document", get().to(get_asyncapi_document))
-        .service(Files::new("/asyncapi", concat!(constants::third_party_dir!(), "/asyncapi-react/")));
+        .service(Files::new("/asyncapi", concat!(config::third_party_dir!(), "/asyncapi-react/")));
 }
 
 async fn get_asyncapi_index() -> impl Responder {

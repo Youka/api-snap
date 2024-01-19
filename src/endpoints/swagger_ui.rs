@@ -18,7 +18,7 @@ use serde::{
     Serialize
 };
 use crate::{
-    constants,
+    config,
     utils::http::{
         extract_http_url,
         http_get
@@ -31,7 +31,7 @@ pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
         .route("/swagger-ui/swagger-initializer.js", get().to(get_swagger_initializer))
         .route("/swagger-ui/urls", get().to(get_swagger_ui_urls))
         .route("/swagger-ui/document", get().to(get_swagger_document))
-        .service(Files::new("/swagger-ui", concat!(constants::third_party_dir!(), "/swagger-ui/")));
+        .service(Files::new("/swagger-ui", concat!(config::third_party_dir!(), "/swagger-ui/")));
 }
 
 async fn get_swagger_initializer() -> impl Responder {

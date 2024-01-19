@@ -4,15 +4,15 @@ use actix_web_prom::{
 };
 use prometheus::default_registry;
 use crate::{
-    constants,
+    config,
     utils::collections::labels_to_map
 };
 
 pub fn build_prometheus_metrics_middleware() -> Result<PrometheusMetrics, Box<dyn std::error::Error + Send + Sync>> {
-    PrometheusMetricsBuilder::new(&constants::app_namespace!())
+    PrometheusMetricsBuilder::new(&config::app_namespace!())
         .const_labels(labels_to_map(&[
-            ("app_name", constants::APP_NAME),
-            ("app_version", constants::APP_VERSION)
+            ("app_name", config::APP_NAME),
+            ("app_version", config::APP_VERSION)
         ]))
         .endpoint("/metrics")
         .registry(default_registry().clone())

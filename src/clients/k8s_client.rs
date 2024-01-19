@@ -17,11 +17,8 @@ use kube::{
 };
 use log::debug;
 use crate::{
-    constants,
-    utils::{
-        env::env_var_as_u16,
-        string::LoggedParse
-    }
+    config,
+    utils::string::LoggedParse
 };
 
 #[derive(Clone)]
@@ -51,7 +48,7 @@ impl K8sClient {
         Ok(Self {
             client: Client::try_from(config)?,
             incluster,
-            timeout_seconds: env_var_as_u16("CLIENT_TIMEOUT").unwrap_or(constants::DEFAULT_CLIENT_TIMEOUT).into()
+            timeout_seconds: config::get_client_timeout().into()
         })
     }
 

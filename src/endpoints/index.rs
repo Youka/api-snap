@@ -10,7 +10,7 @@ use actix_web::{
     Responder
 };
 use crate::{
-    constants,
+    config,
     utils::string::process_template
 };
 
@@ -29,8 +29,8 @@ async fn get_index_html() -> impl Responder {
             process_template(
                 include_str!("assets/index.template.html"),
                 &[
-                    ("APP_NAME", constants::APP_NAME),
-                    ("APP_VERSION", constants::APP_VERSION)
+                    ("APP_NAME", config::APP_NAME),
+                    ("APP_VERSION", config::APP_VERSION)
                 ]
             )
         ).as_str())
