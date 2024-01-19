@@ -103,7 +103,7 @@ impl K8sClient {
             // TODO: update port by NodePort of fitting internal port
 
             service_spec.ports.as_ref()
-                .ok_or(anyhow!("Service '{}/{}' requires to have ports for non-incluster communication", namespace, name));
+                .ok_or(anyhow!("Service '{}/{}' requires to have ports for non-incluster communication", namespace, name))?;
 
             port = 0;//service_spec.ports;
             "localhost"

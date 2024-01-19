@@ -39,7 +39,7 @@ async fn main() -> IOResult<()> {
         .unwrap_or(constants::DEFAULT_PORT);
 
     // Initialize shared web resources
-    let metrics = endpoints::prometheus::build_prometheus_metrics_middleware()
+    let metrics = endpoints::metrics::build_prometheus_metrics_middleware()
         .expect("Initialize prometheus metrics structure");
     let k8s_client = clients::k8s_client::K8sClient::new().await
         .expect("Initialize kubernetes client");
