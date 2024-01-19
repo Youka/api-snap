@@ -10,10 +10,10 @@ keywords:
     - documentation
     - openapi
     - asyncapi
-home: https://youka.dev/api-snap
+home: https://api-snap.youka.dev
 sources:
     - https://github.com/Youka/api-snap
-icon: https://youka.dev/api-snap/favicon.png
+icon: https://api-snap.youka.dev/favicon.png
 
 # Chart exclusive
 apiVersion: v2
