@@ -1,8 +1,6 @@
 use std::env::var as env_var;
-use crate:: {
-    constants,
-    utils::string::LoggedParse
-};
+use super::string::LoggedParse;
+use crate::constants;
 
 pub fn env_var_as_string(name: &str) -> Option<String> {
     env_var(constants::env_var_prefix!() + name)
