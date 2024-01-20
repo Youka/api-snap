@@ -7,6 +7,7 @@ use actix_web::{
     web::{
         get,
         redirect,
+        Bytes,
         Data,
         Json,
         Query,
@@ -26,14 +27,12 @@ use crate::{
         k8s_client::K8sClient,
         documents_proxies::{
             get_api_services,
+            get_service_api_content,
             ApiType
         }
     },
     config,
-    utils::http::{
-        extract_http_url,
-        http_get
-    }
+    utils::http::extract_http_url
 };
 
 pub fn configure_asyncapi_endpoints(service_config: &mut ServiceConfig) {
@@ -68,25 +67,28 @@ async fn get_asyncapi_urls(request: HttpRequest, k8s_client: Data<K8sClient>) ->
             StatusCode::OK
         ),
         Err(err) => {
-            error!("Finding AsyncAPI services failed: {}", err);
+            error!("Getting AsyncAPI services failed: {}", err);
             (
                 Json(vec![]),
-                StatusCode::INTERNAL_SERVER_ERROR
+                StatusCode::BAD_GATEWAY
             )
         }
     }
 }
 
-async fn get_asyncapi_document(query: Query<DocumentQuery>) -> impl Responder {
-
-    // TODO: implement by k8s
-
-    match query.into_inner() {
-        DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "streetlights_kafka" =>
-            http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-kafka-asyncapi.yml").await,
-        DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "streetlights_mqtt" =>
-            http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-mqtt-asyncapi.yml").await,
-        _ => None
+async fn get_asyncapi_document(query: Query<DocumentQuery>, k8s_client: Data<K8sClient>) -> impl Responder {
+    match get_service_api_content(&k8s_client, ApiType::ASYNCAPI, &query.namespace, &query.service).await {
+        Ok(bytes) => (
+            bytes,
+            StatusCode::OK
+        ),
+        Err(err) => {
+            error!("Getting OpenAPI document failed: {}", err);
+            (
+                Bytes::new(),
+                StatusCode::BAD_GATEWAY
+            )
+        }
     }
 }
 

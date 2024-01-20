@@ -7,6 +7,7 @@ use actix_web::{
     web::{
         get,
         redirect,
+        Bytes,
         Data,
         Json,
         Query,
@@ -26,15 +27,13 @@ use crate::{
     clients::{
         documents_proxies::{
             get_api_services,
+            get_service_api_content,
             ApiType
         },
         k8s_client::K8sClient
     },
     config,
-    utils::http::{
-        extract_http_url,
-        http_get
-    }
+    utils::http::extract_http_url
 };
 
 pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
@@ -42,7 +41,7 @@ pub fn configure_swagger_ui_endpoints(service_config: &mut ServiceConfig) {
         .service(redirect("/swagger-ui", "/swagger-ui/index.html"))
         .route("/swagger-ui/swagger-initializer.js", get().to(get_swagger_initializer))
         .route("/swagger-ui/urls", get().to(get_swagger_ui_urls))
-        .route("/swagger-ui/document", get().to(get_swagger_document))
+        .route("/swagger-ui/document", get().to(get_openapi_document))
         .service(Files::new("/swagger-ui", concat!(config::third_party_dir!(), "/swagger-ui/")));
 }
 
@@ -69,25 +68,28 @@ async fn get_swagger_ui_urls(request: HttpRequest, k8s_client: Data<K8sClient>) 
             StatusCode::OK
         ),
         Err(err) => {
-            error!("Finding OpenAPI services failed: {}", err);
+            error!("Getting OpenAPI services failed: {}", err);
             (
                 Json(vec![]),
-                StatusCode::INTERNAL_SERVER_ERROR
+                StatusCode::BAD_GATEWAY
             )
         }
     }
 }
 
-async fn get_swagger_document(query: Query<DocumentQuery>) -> impl Responder {
-
-    // TODO: implement by k8s
-
-    match query.into_inner() {
-        DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "petstore" =>
-            http_get("https://petstore.swagger.io/v2/swagger.json").await,
-        DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "petstore3" =>
-            http_get("https://petstore3.swagger.io/api/v3/openapi.json").await,
-        _ => None
+async fn get_openapi_document(query: Query<DocumentQuery>, k8s_client: Data<K8sClient>) -> impl Responder {
+    match get_service_api_content(&k8s_client, ApiType::OPENAPI, &query.namespace, &query.service).await {
+        Ok(bytes) => (
+            bytes,
+            StatusCode::OK
+        ),
+        Err(err) => {
+            error!("Getting OpenAPI document failed: {}", err);
+            (
+                Bytes::new(),
+                StatusCode::BAD_GATEWAY
+            )
+        }
     }
 }
 

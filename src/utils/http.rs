@@ -2,8 +2,12 @@ use actix_web::{
     web::Bytes,
     HttpRequest
 };
+use anyhow::{
+    anyhow,
+    bail,
+    Result as AnyResult
+};
 use awc::Client;
-use log::warn;
 
 pub fn extract_http_url(request: HttpRequest) -> String {
     let connection_info = request.connection_info();
@@ -15,18 +19,10 @@ pub fn extract_http_url(request: HttpRequest) -> String {
     )
 }
 
-pub async fn http_get(url: &str) -> Option<Bytes> {
+pub async fn http_get(url: &str) -> AnyResult<Bytes> {
     match Client::new().get(url).send().await {
-        Ok(mut response) => match response.body().await {
-            Ok(body) => Some(body),
-            Err(err) => {
-                warn!("Http body invalid: {} => {}", url, err);
-                None
-            }
-        },
-        Err(err) => {
-            warn!("Http get request failed: {} => {}", url, err);
-            None
-        }
+        Ok(mut response) => response.body().await
+            .map_err(|err| anyhow!("Http body invalid: {} => {}", url, err)),
+        Err(err) => bail!("Http get request failed: {} => {}", url, err)
     }
 }

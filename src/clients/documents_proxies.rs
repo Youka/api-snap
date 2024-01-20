@@ -1,3 +1,4 @@
+use actix_web::web::Bytes;
 use anyhow::Result as AnyResult;
 use cached::{
     proc_macro::cached,
@@ -5,7 +6,10 @@ use cached::{
 };
 use log::debug;
 use super::k8s_client::K8sClient;
-use crate::config;
+use crate::{
+    config,
+    utils::http::http_get
+};
 
 #[cached(
     result = true,
@@ -40,6 +44,23 @@ pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyR
             config::OPENAPI_PATH_ANNOTATION
         ]
     }).await
+}
+
+#[cached(
+    result = true,
+    sync_writes = true,
+    key = "(ApiType, String, String)",
+    convert = r#"{ (api_type, namespace.to_owned(), name.to_owned()) }"#,
+    type = "TimedCache<(ApiType, String, String), Bytes>",
+    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }"
+)]
+pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, namespace: &str, name: &str) -> AnyResult<Bytes> {
+    http_get(
+        &match api_type {
+            ApiType::ASYNCAPI => k8s_client.get_service_url_by_annotated_port_and_path(namespace, name, config::ASYNCAPI_PORT_ANNOTATION, 80, config::ASYNCAPI_PATH_ANNOTATION, "/openapi"),
+            ApiType::OPENAPI => k8s_client.get_service_url_by_annotated_port_and_path(namespace, name, config::OPENAPI_PORT_ANNOTATION, 80, config::OPENAPI_PATH_ANNOTATION, "/asyncapi")
+        }.await?
+    ).await
 }
 
 #[derive(Hash, Eq, PartialEq, Clone, Copy, Debug)]
