@@ -93,16 +93,15 @@ impl K8sClient {
             service_spec.cluster_ip.as_ref()
                 .ok_or(anyhow!("Service '{}/{}' missing cluster ip", namespace, name))?
         } else {
-            if service_spec.type_ != Some("NodePort".to_owned()) {
-                bail!("Service '{}/{}' requires to be of type NodePort for non-incluster communication", namespace, name);
-            }
-
-            // TODO: update port by NodePort of fitting internal port
-
-            service_spec.ports.as_ref()
-                .ok_or(anyhow!("Service '{}/{}' requires to have ports for non-incluster communication", namespace, name))?;
-
-            port = 0;//service_spec.ports;
+            port = service_spec.ports.as_ref()
+                .ok_or(anyhow!("Service '{}/{}' requires to have ports for non-incluster communication", namespace, name))?
+                .iter()
+                .find(|service_port| service_port.port == port as i32)
+                .ok_or(anyhow!("Service '{}/{}' has no fitting port for NodePort mapping", namespace, name))?
+                .node_port
+                .ok_or(anyhow!("Service '{}/{}' misses a NodePort", namespace, name))?
+                .try_into()
+                .map_err(|err| anyhow!("NodePort out of range: {}", err))?;
             "localhost"
         };
         Ok(format!("http://{}:{}{}", host, port, path))

@@ -4,7 +4,12 @@ use crate::utils::env;
 pub const APP_NAME: &str = env!("CARGO_PKG_NAME");
 pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-// Environment
+// Static
+pub const OPENAPI_PORT_ANNOTATION: &str = "openapi/port";
+pub const OPENAPI_PATH_ANNOTATION: &str = "openapi/path";
+pub const ASYNCAPI_PORT_ANNOTATION: &str = "asyncapi/port";
+pub const ASYNCAPI_PATH_ANNOTATION: &str = "asyncapi/path";
+
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }
 macro_rules! app_namespace { () => { env!("CARGO_PKG_NAME").to_lowercase().replace("-", "") } }
 macro_rules! third_party_dir { () => { "third-party" } }
@@ -15,7 +20,7 @@ pub(crate) use {
     third_party_dir
 };
 
-// Web
+// Dynamic
 pub fn get_address() -> String {
     env::env_var_as_string(&(env_var_prefix!() + "ADDRESS")).unwrap_or("127.0.0.1".to_owned())
 }

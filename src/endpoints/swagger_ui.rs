@@ -1,9 +1,13 @@
 use actix_files::Files;
 use actix_web::{
-    http::header::ContentType,
+    http::{
+        header::ContentType,
+        StatusCode
+    },
     web::{
         get,
         redirect,
+        Data,
         Json,
         Query,
         ServiceConfig
@@ -12,12 +16,20 @@ use actix_web::{
     HttpResponse,
     Responder
 };
+use log::error;
 use mime::APPLICATION_JAVASCRIPT;
 use serde::{
     Deserialize,
     Serialize
 };
 use crate::{
+    clients::{
+        documents_proxies::{
+            get_api_services,
+            ApiType
+        },
+        k8s_client::K8sClient
+    },
     config,
     utils::http::{
         extract_http_url,
@@ -40,22 +52,36 @@ async fn get_swagger_initializer() -> impl Responder {
         .body(include_str!("assets/swagger-initializer.js"))
 }
 
-async fn get_swagger_ui_urls(request: HttpRequest) -> impl Responder {
+async fn get_swagger_ui_urls(request: HttpRequest, k8s_client: Data<K8sClient>) -> impl Responder {
     let url = extract_http_url(request);
     let base_url = url.strip_suffix("/urls").expect("Http request matches route registration");
-    Json([
-        SwaggerUiUrl {
-            name: "Petstore v2".to_owned(),
-            url: format!("{}/document?namespace=default&service=petstore", base_url)
-        },
-        SwaggerUiUrl {
-            name: "Petstore v3".to_owned(),
-            url: format!("{}/document?namespace=default&service=petstore3", base_url)
-        },
-    ])
+
+    match get_api_services(&k8s_client, ApiType::OPENAPI).await {
+        Ok(services) => (
+            Json(
+                services.into_iter()
+                    .map(|(namespace, name)| SwaggerUiUrl {
+                        name: format!("{}/{}", namespace, name),
+                        url: format!("{}/document?namespace={}&service={}", base_url, namespace, name)
+                    })
+                    .collect()
+            ),
+            StatusCode::OK
+        ),
+        Err(err) => {
+            error!("Finding OpenAPI services failed: {}", err);
+            (
+                Json(vec![]),
+                StatusCode::INTERNAL_SERVER_ERROR
+            )
+        }
+    }
 }
 
 async fn get_swagger_document(query: Query<DocumentQuery>) -> impl Responder {
+
+    // TODO: implement by k8s
+
     match query.into_inner() {
         DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "petstore" =>
             http_get("https://petstore.swagger.io/v2/swagger.json").await,

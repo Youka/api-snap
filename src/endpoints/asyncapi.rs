@@ -1,9 +1,13 @@
 use actix_files::Files;
 use actix_web::{
-    http::header::ContentType,
+    http::{
+        header::ContentType,
+        StatusCode
+    },
     web::{
         get,
         redirect,
+        Data,
         Json,
         Query,
         ServiceConfig
@@ -12,11 +16,19 @@ use actix_web::{
     HttpResponse,
     Responder
 };
+use log::error;
 use serde::{
     Deserialize,
     Serialize
 };
 use crate::{
+    clients::{
+        k8s_client::K8sClient,
+        documents_proxies::{
+            get_api_services,
+            ApiType
+        }
+    },
     config,
     utils::http::{
         extract_http_url,
@@ -39,22 +51,36 @@ async fn get_asyncapi_index() -> impl Responder {
         .body(include_str!("assets/asyncapi-index.html"))
 }
 
-async fn get_asyncapi_urls(request: HttpRequest) -> impl Responder {
+async fn get_asyncapi_urls(request: HttpRequest, k8s_client: Data<K8sClient>) -> impl Responder {
     let url = extract_http_url(request);
     let base_url = url.strip_suffix("/urls").expect("Http request matches route registration");
-    Json([
-        AsyncApiUrl {
-            name: "Streetlights Kafka API".to_owned(),
-            url: format!("{}/document?namespace=default&service=streetlights_kafka", base_url)
-        },
-        AsyncApiUrl {
-            name: "Streetlights MQTT API".to_owned(),
-            url: format!("{}/document?namespace=default&service=streetlights_mqtt", base_url)
-        },
-    ])
+
+    match get_api_services(&k8s_client, ApiType::ASYNCAPI).await {
+        Ok(services) => (
+            Json(
+                services.into_iter()
+                    .map(|(namespace, name)| AsyncApiUrl {
+                        name: format!("{}/{}", namespace, name),
+                        url: format!("{}/document?namespace={}&service={}", base_url, namespace, name)
+                    })
+                    .collect()
+            ),
+            StatusCode::OK
+        ),
+        Err(err) => {
+            error!("Finding AsyncAPI services failed: {}", err);
+            (
+                Json(vec![]),
+                StatusCode::INTERNAL_SERVER_ERROR
+            )
+        }
+    }
 }
 
 async fn get_asyncapi_document(query: Query<DocumentQuery>) -> impl Responder {
+
+    // TODO: implement by k8s
+
     match query.into_inner() {
         DocumentQuery { ref namespace, ref service } if namespace == "default" && service == "streetlights_kafka" =>
             http_get("https://raw.githubusercontent.com/asyncapi/spec/v3.0.0/examples/streetlights-kafka-asyncapi.yml").await,

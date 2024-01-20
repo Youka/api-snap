@@ -14,9 +14,7 @@ categories = ["visualization"]
 publish = false
 
 [features]
-openapi-support = []
-asyncapi-support = []
-default = ["openapi-support", "asyncapi-support"]
+default = []
 
 # Reference: https://doc.rust-lang.org/rustc/lints/listing/index.html
 [lints.rust]
