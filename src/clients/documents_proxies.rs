@@ -12,12 +12,11 @@ use crate::{
 };
 
 #[cached(
-    result = true,
-    sync_writes = true,
-    key = "&'static str",
-    convert = r#"{ "" }"#,
     type = "TimedCache<&'static str, String>",
-    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }"
+    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }",
+    convert = r#"{ "" }"#,
+    result = true,
+    sync_writes = true
 )]
 pub async fn get_k8s_status(k8s_client: &K8sClient) -> AnyResult<String> {
     debug!("Cache hit: get_k8s_status");
@@ -25,12 +24,11 @@ pub async fn get_k8s_status(k8s_client: &K8sClient) -> AnyResult<String> {
 }
 
 #[cached(
-    result = true,
-    sync_writes = true,
-    key = "ApiType",
-    convert = r#"{ api_type }"#,
     type = "TimedCache<ApiType, Vec<(String, String)>>",
-    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }"
+    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }",
+    convert = r#"{ api_type }"#,
+    result = true,
+    sync_writes = true
 )]
 pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyResult<Vec<(String, String)>> {
     debug!("Cache hit: get_api_services, {:?}", api_type);
@@ -47,12 +45,11 @@ pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyR
 }
 
 #[cached(
-    result = true,
-    sync_writes = true,
-    key = "(ApiType, String, String)",
-    convert = r#"{ (api_type, namespace.to_owned(), name.to_owned()) }"#,
     type = "TimedCache<(ApiType, String, String), Bytes>",
-    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }"
+    create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }",
+    convert = r#"{ (api_type, namespace.to_owned(), name.to_owned()) }"#,
+    result = true,
+    sync_writes = true
 )]
 pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, namespace: &str, name: &str) -> AnyResult<Bytes> {
     debug!("Cache hit: get_service_api_content, {:?}, {}, {}", api_type, namespace, name);
