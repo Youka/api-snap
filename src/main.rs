@@ -39,14 +39,14 @@ async fn main() -> IOResult<()> {
     // Initialize shared web resources
     let metrics = endpoints::metrics::build_prometheus_metrics_middleware()
         .expect("Initialize prometheus metrics structure");
-    let documents_client = clients::documents_client::DocumentsClient::new().await
-        .expect("Initialize documents client");
+    let k8s_client = clients::k8s_client::K8sClient::new().await
+        .expect("Initialize kubernetes client");
 
     // Start web server
     log::info!("Starting web server on '{}:{}'", address, port);
     HttpServer::new(move ||
         App::new()
-            .app_data(Data::new(documents_client.clone()))
+            .app_data(Data::new(k8s_client.clone()))
             .wrap(Compress::default())
             .wrap(Logger::default())
             .wrap(NormalizePath::trim())

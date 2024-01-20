@@ -10,7 +10,10 @@ use actix_web::{
     Responder,
 };
 use serde::Serialize;
-use crate::clients::documents_client::DocumentsClient;
+use crate::clients::{
+    documents_proxies::get_k8s_status,
+    k8s_client::K8sClient
+};
 
 pub fn configure_health_endpoints(service_config: &mut ServiceConfig) {
     service_config
@@ -23,10 +26,10 @@ async fn get_health_live() -> impl Responder {
     ""
 }
 
-async fn get_health_ready(documents_client: Data<DocumentsClient>) -> impl Responder {
+async fn get_health_ready(k8s_client: Data<K8sClient>) -> impl Responder {
     let mut is_ready = true;
 
-    let k8s_status = documents_client.get_k8s_status().await.unwrap_or_else(|err| {
+    let k8s_status = get_k8s_status(&k8s_client).await.unwrap_or_else(|err| {
         is_ready = false;
         err.to_string()
     });

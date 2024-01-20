@@ -25,3 +25,6 @@ pub fn get_port() -> u16 {
 pub fn get_client_timeout() -> u16 {
     env::env_var_as_u16(&(env_var_prefix!() + "CLIENT_TIMEOUT")).unwrap_or(30)
 }
+pub fn get_cache_lifespan() -> u16 {
+    env::env_var_as_u16(&(env_var_prefix!() + "CACHE_LIFESPAN")).unwrap_or(10)
+}
