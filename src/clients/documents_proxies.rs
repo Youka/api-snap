@@ -33,7 +33,7 @@ pub async fn get_k8s_status(k8s_client: &K8sClient) -> AnyResult<String> {
     create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }"
 )]
 pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyResult<Vec<(String, String)>> {
-    debug!("Cache hit: find_api_services, {:?}", api_type);
+    debug!("Cache hit: get_api_services, {:?}", api_type);
     k8s_client.get_services_with_any_annotation(&match api_type {
         ApiType::ASYNCAPI => [
             config::ASYNCAPI_PORT_ANNOTATION,
@@ -55,10 +55,19 @@ pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyR
     create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }"
 )]
 pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, namespace: &str, name: &str) -> AnyResult<Bytes> {
+    debug!("Cache hit: get_service_api_content, {:?}, {}, {}", api_type, namespace, name);
     http_get(
         &match api_type {
-            ApiType::ASYNCAPI => k8s_client.get_service_url_by_annotated_port_and_path(namespace, name, config::ASYNCAPI_PORT_ANNOTATION, 80, config::ASYNCAPI_PATH_ANNOTATION, "/openapi"),
-            ApiType::OPENAPI => k8s_client.get_service_url_by_annotated_port_and_path(namespace, name, config::OPENAPI_PORT_ANNOTATION, 80, config::OPENAPI_PATH_ANNOTATION, "/asyncapi")
+            ApiType::ASYNCAPI => k8s_client.get_service_url_by_annotated_port_and_path(
+                namespace, name,
+                config::ASYNCAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
+                config::ASYNCAPI_PATH_ANNOTATION, config::DEFAULT_ASYNCAPI_PATH
+            ),
+            ApiType::OPENAPI => k8s_client.get_service_url_by_annotated_port_and_path(
+                namespace, name,
+                config::OPENAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
+                config::OPENAPI_PATH_ANNOTATION, config::DEFAULT_OPENAPI_PATH
+            )
         }.await?
     ).await
 }

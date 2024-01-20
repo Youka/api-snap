@@ -97,7 +97,7 @@ impl K8sClient {
                 .ok_or(anyhow!("Service '{}/{}' requires to have ports for non-incluster communication", namespace, name))?
                 .iter()
                 .find(|service_port| service_port.port == port as i32)
-                .ok_or(anyhow!("Service '{}/{}' has no fitting port for NodePort mapping", namespace, name))?
+                .ok_or(anyhow!("Service '{}/{}' has no fitting port annotated for NodePort mapping", namespace, name))?
                 .node_port
                 .ok_or(anyhow!("Service '{}/{}' misses a NodePort", namespace, name))?
                 .try_into()

@@ -17,7 +17,10 @@ use actix_web::{
     HttpResponse,
     Responder
 };
-use log::error;
+use log::{
+    error,
+    warn
+};
 use mime::APPLICATION_JAVASCRIPT;
 use serde::{
     Deserialize,
@@ -84,7 +87,7 @@ async fn get_openapi_document(query: Query<DocumentQuery>, k8s_client: Data<K8sC
             StatusCode::OK
         ),
         Err(err) => {
-            error!("Getting OpenAPI document failed: {}", err);
+            warn!("Getting OpenAPI document failed: {}", err);
             (
                 Bytes::new(),
                 StatusCode::BAD_GATEWAY

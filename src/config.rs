@@ -7,8 +7,11 @@ pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
 // Static
 pub const OPENAPI_PORT_ANNOTATION: &str = "openapi/port";
 pub const OPENAPI_PATH_ANNOTATION: &str = "openapi/path";
+pub const DEFAULT_OPENAPI_PATH: &str = "/openapi";
 pub const ASYNCAPI_PORT_ANNOTATION: &str = "asyncapi/port";
 pub const ASYNCAPI_PATH_ANNOTATION: &str = "asyncapi/path";
+pub const DEFAULT_ASYNCAPI_PATH: &str = "/asyncapi";
+pub const DEFAULT_API_PORT: u16 = 80;
 
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }
 macro_rules! app_namespace { () => { env!("CARGO_PKG_NAME").to_lowercase().replace("-", "") } }

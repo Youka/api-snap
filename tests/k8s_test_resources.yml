@@ -946,7 +946,7 @@ spec:
       resources:
         limits:
           memory: "128Mi"
-          cpu: 1
+          cpu: "1"
   volumes:
     - name: html
       configMap:
@@ -2061,7 +2061,7 @@ spec:
       resources:
         limits:
           memory: "128Mi"
-          cpu: 1
+          cpu: "1"
   volumes:
     - name: html
       configMap:
