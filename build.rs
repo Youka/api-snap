@@ -1,6 +1,7 @@
 // Reference: https://doc.rust-lang.org/cargo/reference/build-scripts.html
 
 use std::{
+    ffi::OsStr,
     fs::{
         create_dir_all,
         remove_dir_all,
@@ -79,7 +80,7 @@ fn download_swagger_ui(swagger_ui_version: &str) {
     for entry in Archive::new(GzDecoder::new(swagger_ui_archive)).entries().unwrap() {
         let mut file = entry.unwrap();
         let path = file.path().unwrap();
-        if path.parent().filter(|p| p.ends_with("dist")).is_some() {
+        if path.parent().and_then(|p| p.file_name()) == Some(OsStr::new("dist")) && path.extension() != Some(OsStr::new("map")) {
             file.unpack(unpack_dir.join(path.file_name().unwrap())).unwrap();
         }
     }
