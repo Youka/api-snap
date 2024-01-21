@@ -30,7 +30,7 @@ async fn main() -> IOResult<()> {
     }
 
     // Initialize logging interface by environment variables
-    log_init(LogEnvironment::default().default_filter_or("info"));
+    log_init(LogEnvironment::default().default_filter_or("warn"));
 
     // Read configuration
     let address = config::get_address();
