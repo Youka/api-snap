@@ -1,0 +1,22 @@
+Get the application URL by running these commands:
+{{- if .Values.ingress.hosts }}
+{{- range $host := .Values.ingress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+{{- else if eq "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get services {{ include "app.name" . }} --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}")
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if eq "LoadBalancer" .Values.service.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get svc -w {{ include "app.name" . }} --namespace {{ .Release.Namespace }}'
+  export SERVICE_IP=$(kubectl get svc {{ include "app.name" . }} --namespace {{ .Release.Namespace }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.service.port }}
+{{- else if eq "ClusterIP" .Values.service.type }}
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ .Chart.Name }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod $POD_NAME --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://localhost:8080 to use your application"
+  kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT --namespace {{ .Release.Namespace }}
+{{- end }}

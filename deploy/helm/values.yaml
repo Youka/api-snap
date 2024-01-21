@@ -1,0 +1,64 @@
+clusterrole:
+  annotations: {}
+
+clusterrolebinding:
+  annotations: {}
+
+serviceaccount:
+  annotations: {}
+
+service:
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/metrics'
+    prometheus.io/port: '80'
+  type: ClusterIP
+  port: 80
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+  className: nginx
+  hosts: []
+  #  - host: example.com
+  #    paths:
+  #      - path: /
+  #        pathType: Prefix
+  tls: []
+  #  - hosts:
+  #      - example.com
+  #    secretName: example-com-tls
+
+configmap:
+  annotations: {}
+  data: {}
+  #  RUST_LOG: debug
+  #  API_SNAP_CLIENT_TIMEOUT: '10'
+  #  API_SNAP_CACHE_LIFESPAN: '60'
+
+hpa:
+  create: false
+  annotations: {}
+  minReplicas: 1
+  maxReplicas: 5
+  cpuUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80
+
+deployment:
+  annotations: {}
+  replicas: 1
+  pod:
+    annotations: {}
+    image:
+      pullSecrets: []
+      pullPolicy: IfNotPresent
+      repository: youka/api-snap
+      tag: ~
+    resources: {}
+    #  limits:
+    #    cpu: 500m
+    #    memory: 256Mi
+    #  requests:
+    #    cpu: 100m
+    #    memory: 64Mi

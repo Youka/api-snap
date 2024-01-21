@@ -13,7 +13,7 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 # Documentation & configuration files (asciidoc+json+yaml)
-[{*.md,*.adoc,*.json,*.yml}]
+[{*.md,*.adoc,*.json,*.yml,*.yaml}]
 indent_size = 2
 
 # Markdown
