@@ -922,6 +922,15 @@ data:
                 type: string
                 enum:
                   - my-app-id
+  book.graphql: |-
+    type Book {
+      title: String
+      author: Author
+    }
+    type Author {
+      name: String
+      books: [Book]
+    }
 
 ---
 
@@ -962,6 +971,7 @@ metadata:
   annotations:
     openapi/path: /petstore.yml
     asyncapi/path: /streetlights_kafka.yml
+    graphql/path: /book.graphql
 spec:
   type: NodePort
   selector:
@@ -2036,7 +2046,18 @@ data:
           bindings:
             mqtt:
               qos: 1
-
+  user.graphql: |-
+    type Query {
+      users: [User!]!
+      user(id: ID!): User
+    }
+    type Mutation {
+      createUser(name: String!): User!
+    }
+    type User {
+      id: ID!
+      name: String!
+    }
 
 ---
 
@@ -2077,6 +2098,7 @@ metadata:
   annotations:
     openapi/path: /petstore3.yml
     asyncapi/path: /streetlights_mqtt.yml
+    graphql/path: /user.graphql
 spec:
   type: NodePort
   selector:
