@@ -18,7 +18,7 @@ RUN --mount=type=bind,source=src,target=src \
     --mount=type=cache,target=/api-snap/target/ \
     --mount=type=cache,target=/api-snap/third-party/ \
     --mount=type=cache,target=/usr/local/cargo/registry/ \
-    cargo build --release --locked && \
+    cargo build --release --locked --no-default-features && \
     mkdir release && \
     cp -r target/release/api-snap third-party release/
 
