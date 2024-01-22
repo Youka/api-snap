@@ -9,7 +9,7 @@ description = "An application which collects API documents by kubernetes service
 homepage = "https://api-snap.youka.dev"
 repository = "https://github.com/Youka/api-snap"
 license = "Apache-2.0"
-keywords = ["kubernetes", "documentation", "openapi", "asyncapi"]
+keywords = ["kubernetes", "documentation", "openapi", "asyncapi", "graphql"]
 categories = ["visualization"]
 publish = false
 

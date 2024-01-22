@@ -10,6 +10,7 @@ keywords:
     - documentation
     - openapi
     - asyncapi
+    - graphql
 home: https://api-snap.youka.dev
 sources:
     - https://github.com/Youka/api-snap
