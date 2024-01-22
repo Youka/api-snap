@@ -15,15 +15,17 @@ publish = false
 
 [features]
 default = ["dotenv"]
-dotenv = ["dotenvy"]
+dotenv = ["dep:dotenvy"]
 
 # Reference: https://doc.rust-lang.org/rustc/lints/listing/index.html
 [lints.rust]
+unused_must_use = "forbid"
 unsafe_code = "warn"
 
 # Reference: https://rust-lang.github.io/rust-clippy/stable/index.html
 [lints.clippy]
 undocumented_unsafe_blocks = "forbid"
+wildcard_imports = "warn"
 
 # Reference: https://doc.rust-lang.org/cargo/reference/profiles.html
 [profile.release]
