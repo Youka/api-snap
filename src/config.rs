@@ -11,6 +11,9 @@ pub const DEFAULT_OPENAPI_PATH: &str = "/openapi";
 pub const ASYNCAPI_PORT_ANNOTATION: &str = "asyncapi/port";
 pub const ASYNCAPI_PATH_ANNOTATION: &str = "asyncapi/path";
 pub const DEFAULT_ASYNCAPI_PATH: &str = "/asyncapi";
+pub const GRAPHQL_PORT_ANNOTATION: &str = "graphql/port";
+pub const GRAPHQL_PATH_ANNOTATION: &str = "graphql/path";
+pub const DEFAULT_GRAPHQL_PATH: &str = "/graphql";
 pub const DEFAULT_API_PORT: u16 = 80;
 
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }

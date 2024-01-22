@@ -1,4 +1,5 @@
 pub mod asyncapi;
+pub mod graphql;
 pub mod health;
 pub mod index;
 pub mod metrics;

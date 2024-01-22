@@ -37,6 +37,10 @@ pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyR
             config::ASYNCAPI_PORT_ANNOTATION,
             config::ASYNCAPI_PATH_ANNOTATION
         ],
+        ApiType::Graphql => [
+            config::GRAPHQL_PORT_ANNOTATION,
+            config::GRAPHQL_PATH_ANNOTATION
+        ],
         ApiType::Openapi => [
             config::OPENAPI_PORT_ANNOTATION,
             config::OPENAPI_PATH_ANNOTATION
@@ -60,6 +64,11 @@ pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, 
                 config::ASYNCAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
                 config::ASYNCAPI_PATH_ANNOTATION, config::DEFAULT_ASYNCAPI_PATH
             ),
+            ApiType::Graphql => k8s_client.get_service_url_by_annotated_port_and_path(
+                namespace, name,
+                config::GRAPHQL_PORT_ANNOTATION, config::DEFAULT_API_PORT,
+                config::GRAPHQL_PATH_ANNOTATION, config::DEFAULT_GRAPHQL_PATH
+            ),
             ApiType::Openapi => k8s_client.get_service_url_by_annotated_port_and_path(
                 namespace, name,
                 config::OPENAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
@@ -72,5 +81,6 @@ pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, 
 #[derive(Hash, Eq, PartialEq, Clone, Copy, Debug)]
 pub enum ApiType {
     Asyncapi,
+    Graphql,
     Openapi
 }
