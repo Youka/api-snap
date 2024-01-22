@@ -20,22 +20,25 @@ use ureq::get as web_get;
 macro_rules! third_party_dir { () => { "third-party" } }
 macro_rules! asyncapi_react_dir { () => { "asyncapi-react" } }
 macro_rules! swagger_ui_dir { () => { "swagger-ui" } }
+macro_rules! prism_graphql_dir { () => { "prism-graphql" } }
 
 const THIRD_PARTY_ASYNCAPI_REACT_DIR: &str = concat!(third_party_dir!(), "/", asyncapi_react_dir!());
 const THIRD_PARTY_SWAGGER_UI_DIR: &str = concat!(third_party_dir!(), "/", swagger_ui_dir!());
+const THIRD_PARTY_PRISM_GRAPHQL_DIR: &str = concat!(third_party_dir!(), "/", prism_graphql_dir!());
 
 fn main() {
     let metadata = MetadataCommand::new()
         .exec().unwrap();
-    let (asyncapi_react_version, swagger_ui_version) = get_asyncapi_react_and_swagger_ui_version(&metadata);
+    let (asyncapi_react_version, swagger_ui_version, prism_graphql_version) = get_ui_versions(&metadata);
 
     download_asyncapi_react(asyncapi_react_version);
     download_swagger_ui(swagger_ui_version);
+    download_prism_graphql(prism_graphql_version);
 
     println!("cargo:rerun-if-changed=Cargo.toml");
 }
 
-fn get_asyncapi_react_and_swagger_ui_version(metadata: &Metadata) -> (&str, &str) {
+fn get_ui_versions(metadata: &Metadata) -> (&str, &str, &str) {
     let third_party = metadata
         .root_package().unwrap()
         .metadata
@@ -49,8 +52,11 @@ fn get_asyncapi_react_and_swagger_ui_version(metadata: &Metadata) -> (&str, &str
     let swagger_ui_version = third_party
         .get(swagger_ui_dir!()).unwrap()
         .as_str().unwrap();
+    let prism_graphql_version = third_party
+        .get(prism_graphql_dir!()).unwrap()
+        .as_str().unwrap();
 
-    (asyncapi_react_version, swagger_ui_version)
+    (asyncapi_react_version, swagger_ui_version, prism_graphql_version)
 }
 
 fn download_asyncapi_react(asyncapi_react_version: &str) {
@@ -84,6 +90,27 @@ fn download_swagger_ui(swagger_ui_version: &str) {
             file.unpack(unpack_dir.join(path.file_name().unwrap())).unwrap();
         }
     }
+}
+
+fn download_prism_graphql(prism_graphql_version: &str) {
+    create_dir_all_new(THIRD_PARTY_PRISM_GRAPHQL_DIR);
+
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/themes/prism-dark.min.css", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-dark.min.css")
+    );
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/components/prism-core.min.js", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-core.min.js")
+    );
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/components/prism-graphql.min.js", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-graphql.min.js")
+    );
+    download_file(
+        "https://raw.githubusercontent.com/graphql/graphql.github.io/source/static/favicon.ico",
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("favicon.ico")
+    );
 }
 
 fn create_dir_all_new(path: &str) {

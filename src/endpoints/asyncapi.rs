@@ -27,12 +27,12 @@ use serde::{
 };
 use crate::{
     clients::{
-        k8s_client::K8sClient,
         documents_proxies::{
             get_api_services,
             get_service_api_content,
             ApiType
-        }
+        },
+        k8s_client::K8sClient
     },
     config,
     utils::http::extract_http_url
