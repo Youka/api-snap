@@ -33,11 +33,11 @@ pub async fn get_k8s_status(k8s_client: &K8sClient) -> AnyResult<String> {
 pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyResult<Vec<(String, String)>> {
     debug!("Cache hit: get_api_services, {:?}", api_type);
     k8s_client.get_services_with_any_annotation(&match api_type {
-        ApiType::ASYNCAPI => [
+        ApiType::Asyncapi => [
             config::ASYNCAPI_PORT_ANNOTATION,
             config::ASYNCAPI_PATH_ANNOTATION
         ],
-        ApiType::OPENAPI => [
+        ApiType::Openapi => [
             config::OPENAPI_PORT_ANNOTATION,
             config::OPENAPI_PATH_ANNOTATION
         ]
@@ -55,12 +55,12 @@ pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, 
     debug!("Cache hit: get_service_api_content, {:?}, {}, {}", api_type, namespace, name);
     http_get(
         &match api_type {
-            ApiType::ASYNCAPI => k8s_client.get_service_url_by_annotated_port_and_path(
+            ApiType::Asyncapi => k8s_client.get_service_url_by_annotated_port_and_path(
                 namespace, name,
                 config::ASYNCAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
                 config::ASYNCAPI_PATH_ANNOTATION, config::DEFAULT_ASYNCAPI_PATH
             ),
-            ApiType::OPENAPI => k8s_client.get_service_url_by_annotated_port_and_path(
+            ApiType::Openapi => k8s_client.get_service_url_by_annotated_port_and_path(
                 namespace, name,
                 config::OPENAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
                 config::OPENAPI_PATH_ANNOTATION, config::DEFAULT_OPENAPI_PATH
@@ -71,6 +71,6 @@ pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, 
 
 #[derive(Hash, Eq, PartialEq, Clone, Copy, Debug)]
 pub enum ApiType {
-    ASYNCAPI,
-    OPENAPI
+    Asyncapi,
+    Openapi
 }

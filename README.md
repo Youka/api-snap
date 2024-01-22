@@ -9,6 +9,7 @@ _TODO_
 
 Commands:
 * `cargo run`
+* `cargo clippy`
 * `cargo build --release`
 * `docker build -t youka/api-snap:0.1.0 -f deploy/Dockerfile .`
 * `docker run -it --rm -p 8080:80 --name api-snap youka/api-snap:0.1.0`
