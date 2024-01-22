@@ -1,7 +1,12 @@
+use actix_files::Files;
 use actix_web::{
-    http::StatusCode,
+    http::{
+        header::ContentType,
+        StatusCode
+    },
     web::{
         get,
+        redirect,
         Bytes,
         Data,
         Json,
@@ -9,6 +14,7 @@ use actix_web::{
         ServiceConfig
     },
     HttpRequest,
+    HttpResponse,
     Responder
 };
 use log::{
@@ -28,13 +34,23 @@ use crate::{
         },
         k8s_client::K8sClient
     },
+    config,
     utils::http::extract_http_url
 };
 
 pub fn configure_graphql_endpoints(service_config: &mut ServiceConfig) {
     service_config
+        .service(redirect("/graphql", "/graphql/index.html"))
+        .route("/graphql/index.html", get().to(get_graphql_index))
         .route("/graphql/urls", get().to(get_graphql_urls))
-        .route("/graphql/document", get().to(get_graphql_document));
+        .route("/graphql/document", get().to(get_graphql_document))
+        .service(Files::new("/graphql", concat!(config::third_party_dir!(), "/prism-graphql/")));
+}
+
+async fn get_graphql_index() -> impl Responder {
+    HttpResponse::Ok()
+        .content_type(ContentType::html())
+        .body(include_str!("assets/graphql-index.html"))
 }
 
 async fn get_graphql_urls(request: HttpRequest, k8s_client: Data<K8sClient>) -> impl Responder {
@@ -70,7 +86,7 @@ async fn get_graphql_document(query: Query<DocumentQuery>, k8s_client: Data<K8sC
             StatusCode::OK
         ),
         Err(err) => {
-            warn!("Getting OpenAPI document failed: {}", err);
+            warn!("Getting GraphQL document failed: {}", err);
             (
                 Bytes::new(),
                 StatusCode::BAD_GATEWAY

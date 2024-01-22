@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GraphQL</title>
+        <link rel="icon" href="./favicon.ico">
+        <link rel="stylesheet" href="./prism-dark.min.css">
+        <script src="./prism-core.min.js" data-manual></script>
+        <script src="./prism-graphql.min.js"></script>
+        <script>
+            async function render_graphql(url) {
+                document.getElementById("graphql").innerHTML =
+                    Prism.highlight(await (await fetch(url)).text(), Prism.languages.graphql, 'graphql');
+            }
+
+            window.onload = async function() {
+                const selectElement = document.getElementById("spec-select");
+                selectElement.addEventListener("change", () => render_graphql(selectElement.value));
+
+                for (const namedUrl of await (await fetch("urls")).json()) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = namedUrl.url;
+                    optionElement.appendChild(document.createTextNode(namedUrl.name));
+                    if (!selectElement.hasChildNodes()) {
+                        optionElement.setAttribute("selected", "");
+                        render_graphql(namedUrl.url);
+                    }
+                    selectElement.appendChild(optionElement);
+                }
+            }
+        </script>
+        <style>
+            body {
+                /* Dark like the prism theme */
+                background-color: #202020;
+            }
+
+            #spec-select-container {
+                /* Colors */
+                color: white;
+                /* Text */
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="spec-select-container">
+            <label for="spec-select">Select a specification:</label>
+            <select id="spec-select"></select>
+        </div>
+        <pre class="language-graphql"><code id="graphql" class="language-graphql"></code></pre>
+    </body>
+</html>
