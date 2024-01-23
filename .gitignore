@@ -11,6 +11,7 @@
 # Temporary
 tmp/
 *.tmp.*
+*.profraw
 
 # Output
 /target/
