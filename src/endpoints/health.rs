@@ -1,15 +1,15 @@
-use actix_web::{
-    http::StatusCode,
-    web::{
-        get,
-        redirect,
-        Data,
-        Json,
-        ServiceConfig
-    },
-    Responder,
+use actix_web::web::{
+    get,
+    redirect
 };
 use serde::Serialize;
+use super::models::http::{
+    Data,
+    Json,
+    Responder,
+    ServiceConfig,
+    StatusCode
+};
 use crate::clients::{
     documents_proxies::get_k8s_status,
     k8s_client::K8sClient

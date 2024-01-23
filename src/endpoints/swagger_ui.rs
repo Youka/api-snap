@@ -1,30 +1,30 @@
-use actix_files::Files;
-use actix_web::{
-    http::{
-        header::ContentType,
-        StatusCode
-    },
-    web::{
-        get,
-        redirect,
-        Bytes,
-        Data,
-        Json,
-        Query,
-        ServiceConfig
-    },
-    HttpRequest,
-    HttpResponse,
-    Responder
+use actix_web::web::{
+    get,
+    redirect
 };
 use log::{
     error,
     warn
 };
-use mime::APPLICATION_JAVASCRIPT;
-use serde::{
-    Deserialize,
-    Serialize
+use super::models::{
+    api::{
+        ApiUrl,
+        DocumentQuery
+    },
+    http::{
+        APPLICATION_JAVASCRIPT,
+        Bytes,
+        ContentType,
+        Data,
+        Files,
+        HttpRequest,
+        HttpResponse,
+        Json,
+        Query,
+        Responder,
+        ServiceConfig,
+        StatusCode
+    }
 };
 use crate::{
     clients::{
@@ -62,7 +62,7 @@ async fn get_swagger_ui_urls(request: HttpRequest, k8s_client: Data<K8sClient>) 
         Ok(services) => (
             Json(
                 services.into_iter()
-                    .map(|(namespace, name)| SwaggerUiUrl {
+                    .map(|(namespace, name)| ApiUrl {
                         name: format!("{}/{}", namespace, name),
                         url: format!("{}/document?namespace={}&service={}", base_url, namespace, name)
                     })
@@ -94,16 +94,4 @@ async fn get_openapi_document(query: Query<DocumentQuery>, k8s_client: Data<K8sC
             )
         }
     }
-}
-
-#[derive(Serialize)]
-struct SwaggerUiUrl {
-    name: String,
-    url: String
-}
-
-#[derive(Deserialize)]
-struct DocumentQuery {
-    namespace: String,
-    service: String
 }

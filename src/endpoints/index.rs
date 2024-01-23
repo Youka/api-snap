@@ -1,13 +1,11 @@
 use std::sync::OnceLock;
-use actix_web::{
-    http::header::ContentType,
-    web::{
-        get,
-        Bytes,
-        ServiceConfig
-    },
+use actix_web::web::get;
+use super::models::http::{
+    Bytes,
+    ContentType,
     HttpResponse,
-    Responder
+    Responder,
+    ServiceConfig
 };
 use crate::{
     config,
