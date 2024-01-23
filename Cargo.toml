@@ -69,6 +69,6 @@ flate2 = "1"
 
 [package.metadata.third-party]
 # UI
-asyncapi-react = "1.2.11"
-swagger-ui = "5.10.5"
+asyncapi-react = "1.2.13"
+swagger-ui = "5.11.0"
 prism-graphql = "1.29.0"

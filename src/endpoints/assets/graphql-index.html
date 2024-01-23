@@ -3,13 +3,13 @@
     <head>
         <title>GraphQL</title>
         <link rel="icon" href="./favicon.ico">
-        <link rel="stylesheet" href="./prism-dark.min.css">
+        <link rel="stylesheet" href="./prism.min.css">
         <script src="./prism-core.min.js" data-manual></script>
         <script src="./prism-graphql.min.js"></script>
         <script>
             async function render_graphql(url) {
                 document.getElementById("graphql").innerHTML =
-                    Prism.highlight(await (await fetch(url)).text(), Prism.languages.graphql, 'graphql');
+                    Prism.highlight(await (await fetch(url)).text(), Prism.languages.graphql);
             }
 
             window.onload = async function() {
@@ -47,6 +47,6 @@
             <label for="spec-select">Select a specification:</label>
             <select id="spec-select"></select>
         </div>
-        <pre class="language-graphql"><code id="graphql" class="language-graphql"></code></pre>
+        <pre class="language-graphql"><code id="graphql"></code></pre>
     </body>
 </html>

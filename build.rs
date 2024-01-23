@@ -96,8 +96,8 @@ fn download_prism_graphql(prism_graphql_version: &str) {
     create_dir_all_new(THIRD_PARTY_PRISM_GRAPHQL_DIR);
 
     download_file(
-        &format!("https://unpkg.com/prismjs@{}/themes/prism-dark.min.css", prism_graphql_version),
-        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-dark.min.css")
+        &format!("https://unpkg.com/prismjs@{}/themes/prism.min.css", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism.min.css")
     );
     download_file(
         &format!("https://unpkg.com/prismjs@{}/components/prism-core.min.js", prism_graphql_version),
