@@ -17,6 +17,10 @@ publish = false
 default = ["dotenv"]
 dotenv = ["dep:dotenvy"]
 
+# Reference: https://doc.rust-lang.org/cargo/reference/cargo-targets.html
+[lib]
+doctest = false
+
 # Reference: https://doc.rust-lang.org/rustc/lints/listing/index.html
 [lints.rust]
 unused_must_use = "forbid"
