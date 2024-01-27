@@ -1,3 +1,4 @@
+use std::time::Duration;
 use actix_web::{
     web::Bytes,
     HttpRequest
@@ -8,6 +9,7 @@ use anyhow::{
     Result as AnyResult
 };
 use awc::Client;
+use crate::config;
 
 pub fn extract_http_url(request: HttpRequest) -> String {
     let connection_info = request.connection_info();
@@ -20,7 +22,10 @@ pub fn extract_http_url(request: HttpRequest) -> String {
 }
 
 pub async fn http_get(url: &str) -> AnyResult<Bytes> {
-    match Client::new().get(url).send().await {
+    let client = Client::builder()
+        .timeout(Duration::from_secs(config::get_client_timeout().into()))
+        .finish();
+    match client.get(url).send().await {
         Ok(mut response) => response.body().await
             .map_err(|err| anyhow!("Http body invalid: {} => {}", url, err)),
         Err(err) => bail!("Http get request failed: {} => {}", url, err)
