@@ -3,9 +3,13 @@ mod config;
 mod endpoints;
 mod utils;
 
-use std::io::Result as IOResult;
+use std::{
+    io::Result as IOResult,
+    sync::mpsc::Sender
+};
 use actix_cors::Cors;
 use actix_web::{
+    dev::ServerHandle,
     main as actix_main,
     middleware::{
         Compress,
@@ -24,7 +28,7 @@ use env_logger::{
 };
 
 #[actix_main]
-pub async fn main() -> IOResult<()> {
+pub async fn main(server_handle_sender: Option<Sender<ServerHandle>>) -> IOResult<()> {
     // Load environment variables from file
     #[cfg(feature = "dotenv")]
     if let Ok(path) = dotenv() {
@@ -46,7 +50,7 @@ pub async fn main() -> IOResult<()> {
 
     // Start web server
     log::info!("Starting web server on '{}:{}'", address, port);
-    HttpServer::new(move ||
+    let server = HttpServer::new(move ||
         App::new()
             .app_data(Data::new(k8s_client.clone()))
             .wrap(Compress::default())
@@ -64,5 +68,11 @@ pub async fn main() -> IOResult<()> {
             .configure(endpoints::index::configure_index_endpoints)
     )
     .bind((address, port))?
-    .run().await
+    .run();
+
+    if let Some(sender) = server_handle_sender {
+        sender.send(server.handle()).expect("Server handle server still usable");
+    }
+
+    server.await
 }

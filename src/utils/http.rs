@@ -69,7 +69,7 @@ mod tests {
 
     #[test]
     fn http_get_example() {
-        const TEST_BIND: (&str, u16) = ("127.0.0.1", 8989);
+        const TEST_BIND: (&str, u16) = ("127.0.0.1", 9100);
         const EXAMPLE_BODY: &str = "example";
 
         let server = HttpServer::new(||
