@@ -108,6 +108,26 @@ fn download_prism_graphql(prism_graphql_version: &str) {
         PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-graphql.min.js")
     );
     download_file(
+        &format!("https://unpkg.com/prismjs@{}/plugins/line-numbers/prism-line-numbers.min.css", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-line-numbers.min.css")
+    );
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/plugins/line-numbers/prism-line-numbers.min.js", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-line-numbers.min.js")
+    );
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/plugins/toolbar/prism-toolbar.min.css", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-toolbar.min.css")
+    );
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/plugins/toolbar/prism-toolbar.min.js", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-toolbar.min.js")
+    );
+    download_file(
+        &format!("https://unpkg.com/prismjs@{}/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js", prism_graphql_version),
+        PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("prism-copy-to-clipboard.min.js")
+    );
+    download_file(
         "https://raw.githubusercontent.com/graphql/graphql.github.io/source/static/favicon.ico",
         PathBuf::from(THIRD_PARTY_PRISM_GRAPHQL_DIR).join("favicon.ico")
     );
