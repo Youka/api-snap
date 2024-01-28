@@ -82,11 +82,12 @@ mod tests {
         });
 
         System::new().block_on(async {
-            let response = http_get(&format!("http://{}:{}", TEST_BIND.0, TEST_BIND.1)).await.unwrap();
             assert_eq!(
                 EXAMPLE_BODY.as_bytes().to_vec(),
-                response.to_vec()
+                http_get(&format!("http://{}:{}", TEST_BIND.0, TEST_BIND.1)).await.unwrap().to_vec()
             );
+
+            assert!(http_get(&format!("http://{}:{}", TEST_BIND.0, TEST_BIND.1 + 1)).await.is_err(), "Http get request must fail!");
 
             server_handle.stop(true).await;
             server_thread.join().unwrap();
