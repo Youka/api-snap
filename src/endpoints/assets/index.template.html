@@ -9,19 +9,27 @@
                 text-align: center;
             }
 
-            body main {
+            main {
                 display: inline-block;
                 text-align: initial;
             }
 
-            body main h2 {
-                margin-bottom: 0;
+            main section {
+                margin: 1rem;
             }
 
-            body main ul {
-                padding: 0;
+            main h2 {
+                margin: 0;
+            }
+
+            main ul {
+                margin: 0;
                 list-style: none;
-                margin-top: 0;
+                padding: 0;
+            }
+
+            a img {
+                height: 0.75rem;
             }
         </style>
     </head>
@@ -33,17 +41,17 @@
             <section>
                 <h2>APIs</h2>
                 <ul>
-                    <li><a href="./swagger-ui">/swagger-ui</a></li>
-                    <li><a href="./asyncapi">/asyncapi</a></li>
-                    <li><a href="./graphql">/graphql</a></li>
+                    <li><a href="./swagger-ui"><img src="./swagger-ui/favicon-32x32.png"> Swagger UI</a></li>
+                    <li><a href="./asyncapi"><img src="./asyncapi/favicon.ico"> AsyncAPI</a></li>
+                    <li><a href="./graphql"><img src="./graphql/favicon.ico"> GraphQL</a></li>
                 </ul>
             </section>
             <section>
                 <h2>Status</h2>
                 <ul>
-                    <li><a href="./metrics">/metrics</a></li>
-                    <li><a href="./health/live">/health/live</a></li>
-                    <li><a href="./health/ready">/health/ready</a></li>
+                    <li><a href="./metrics">&bigstar; Metrics</a></li>
+                    <li><a href="./health/live">&heartsuit; Health (live)</a></li>
+                    <li><a href="./health/ready">&heartsuit; Health (ready)</a></li>
                 </ul>
             </section>
         </main>
