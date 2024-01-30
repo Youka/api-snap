@@ -22,17 +22,26 @@
 
             window.onload = async function() {
                 const selectElement = document.getElementById("spec-select");
-                selectElement.addEventListener("change", () => render_asyncapi(selectElement.value));
 
+                selectElement.addEventListener("change", () => {
+                    render_asyncapi(selectElement.value);
+                    const url = new URL(window.location);
+                    url.searchParams.set("documentName", selectElement.selectedOptions[0].textContent);
+                    history.replaceState(null, "", url);
+                });
+
+                const documentName = new URLSearchParams(window.location.search).get("documentName");
                 for (const namedUrl of await (await fetch("urls")).json()) {
                     const optionElement = document.createElement("option");
                     optionElement.value = namedUrl.url;
-                    optionElement.appendChild(document.createTextNode(namedUrl.name));
-                    if (!selectElement.hasChildNodes()) {
-                        optionElement.setAttribute("selected", "");
-                        render_asyncapi(namedUrl.url);
+                    optionElement.textContent = namedUrl.name;
+                    if (namedUrl.name === documentName) {
+                        optionElement.selected = true;
                     }
                     selectElement.appendChild(optionElement);
+                }
+                if (selectElement.value) {
+                    render_asyncapi(selectElement.value);
                 }
             }
         </script>
