@@ -8,17 +8,16 @@ _TODO_
 _TODO_
 
 ### QA
-* ```sh
-  cargo check
-  cargo clippy
-  ```
+* `cargo clippy`
+* `cargo test`
 * ```sh
   cargo install cargo-tarpaulin
   cargo tarpaulin --out html --output-dir target --engine llvm --skip-clean
   ```
-* `cargo test`
+
 
 ### Build
+* `cargo update`
 * `cargo run`
 * `cargo build --release --no-default-features --locked`
 
