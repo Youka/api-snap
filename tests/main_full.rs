@@ -52,6 +52,7 @@ fn test_main() {
         let http_client = Client::default();
         test_index(&http_client).await;
         test_health(&http_client).await;
+        test_help(&http_client).await;
         test_metrics(&http_client).await;
         test_asyncapi(&http_client).await;
         test_graphql(&http_client).await;
@@ -70,6 +71,10 @@ async fn test_index(http_client: &Client) {
 async fn test_health(http_client: &Client) {
     http_get_check(&http_client, "/health").await;
     http_get_check(&http_client, "/health/ready").await;  // No kubernetes server by test configuration
+}
+
+async fn test_help(http_client: &Client) {
+    http_get_check(&http_client, "/help").await;
 }
 
 async fn test_metrics(http_client: &Client) {

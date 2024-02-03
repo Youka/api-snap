@@ -27,6 +27,7 @@ fn main_no_k8s() {
         let http_client = Client::default();
         test_index(&http_client).await;
         test_health(&http_client).await;
+        test_help(&http_client).await;
         test_metrics(&http_client).await;
         test_asyncapi(&http_client).await;
         test_graphql(&http_client).await;
@@ -45,6 +46,10 @@ async fn test_index(http_client: &Client) {
 async fn test_health(http_client: &Client) {
     http_get_check(&http_client, "/health", StatusCode::OK).await;
     http_get_check(&http_client, "/health/ready", StatusCode::SERVICE_UNAVAILABLE).await;  // No kubernetes server by test configuration
+}
+
+async fn test_help(http_client: &Client) {
+    http_get_check(&http_client, "/help", StatusCode::OK).await;
 }
 
 async fn test_metrics(http_client: &Client) {

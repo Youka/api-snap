@@ -66,6 +66,7 @@ pub async fn main(server_handle_sender: Option<Sender<ServerHandle>>) -> IOResul
             .configure(endpoints::swagger_ui::configure_swagger_ui_endpoints)
             .configure(endpoints::health::configure_health_endpoints)
             .configure(endpoints::index::configure_index_endpoints)
+            .configure(endpoints::help::configure_help_endpoints)
     )
     .bind((address, port))?
     .run();
