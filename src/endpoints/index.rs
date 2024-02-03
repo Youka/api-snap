@@ -28,7 +28,8 @@ async fn get_index_html() -> impl Responder {
                 include_str!("assets/index.template.html"),
                 &[
                     ("APP_NAME", config::APP_NAME),
-                    ("APP_VERSION", config::APP_VERSION)
+                    ("APP_VERSION", config::APP_VERSION),
+                    ("APP_HOMEPAGE", config::APP_HOMEPAGE)
                 ]
             )
         ).as_str())

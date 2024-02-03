@@ -5,8 +5,9 @@
         <link rel="icon" href="./favicon.png">
         <style>
             body {
-                background-color: #E0E0E0;
                 text-align: center;
+                background-color: #202020;
+                color: white;
             }
 
             main {
@@ -16,16 +17,24 @@
 
             main section {
                 margin: 1rem;
+                padding: 1rem;
+                border-radius: 2rem;
+                background-color: #E8E8E8;
+                color: black;
             }
 
             main h2 {
-                margin: 0;
+                margin: 0 0 0.5rem 0;
             }
 
             main ul {
                 margin: 0;
                 list-style: none;
                 padding: 0;
+            }
+
+            a {
+                text-decoration: none;
             }
 
             a img {
@@ -52,6 +61,13 @@
                     <li><a href="./metrics">&bigstar; Metrics</a></li>
                     <li><a href="./health/live">&heartsuit; Health (live)</a></li>
                     <li><a href="./health/ready">&heartsuit; Health (ready)</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Help</h2>
+                <ul>
+                    <li><a href="./kubernetes-setup">&#9432; Kubernetes setup</a></li>
+                    <li><a href="{{APP_HOMEPAGE}}">&trade; Homepage</a></li>
                 </ul>
             </section>
         </main>
