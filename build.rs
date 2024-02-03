@@ -137,7 +137,7 @@ fn download_prism_graphql(prism_graphql_version: &str) {
 
 fn create_dir_new(path: &str) -> bool {
     if Path::new(path).is_dir() {
-        println!("cargo:warning=Directory already exists! Delete for downloading updates: {}", path);
+        println!("cargo:warning=Directory already exists. Delete for downloading updates (if available): {}", path);
         false
     } else {
         create_dir_all(path).unwrap();

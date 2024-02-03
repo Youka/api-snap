@@ -351,6 +351,7 @@ dependencies = [
  "log",
  "mime",
  "prometheus",
+ "pulldown-cmark",
  "serde",
  "tar",
  "ureq",
@@ -1602,6 +1603,17 @@ name = "protobuf"
 version = "2.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
+
+[[package]]
+name = "pulldown-cmark"
+version = "0.9.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57206b407293d2bcd3af849ce869d52068623f19e1b5ff8e8778e3309439682b"
+dependencies = [
+ "bitflags 2.4.2",
+ "memchr",
+ "unicase",
+]
 
 [[package]]
 name = "quote"
