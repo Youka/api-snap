@@ -16,7 +16,7 @@ const TEST_PORT: u16 = 9101;
 
 #[test]
 fn main_no_k8s() {
-    set_env_var("KUBECONFIG", PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests").join("test_kubeconfig.yml").to_str().unwrap());
+    set_env_var("KUBECONFIG", PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests").join("invalid_kubeconfig.yml").to_str().unwrap());
     set_env_var("API_SNAP_PORT", TEST_PORT.to_string());
 
     let (server_handle_sender, server_handle_receiver) = channel();

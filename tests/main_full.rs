@@ -1,12 +1,7 @@
 use std::{
     env::set_var as set_env_var,
-    path::PathBuf,
-    process::Command,
     sync::mpsc::channel,
-    thread::{
-        sleep,
-        spawn
-    },
+    thread::spawn,
     time::Duration
 };
 use actix_web::{
@@ -20,28 +15,6 @@ const TEST_PORT: u16 = 9102;
 
 #[test]
 fn main_full() {
-    apply_test_resources();
-    test_main();
-}
-
-fn apply_test_resources() {
-    kubectl_apply("k8s_test_namespaces.yml");
-    sleep(Duration::from_secs(3));  // Give server some time to create namespaces first
-    kubectl_apply("k8s_test_resources.yml");
-}
-
-fn kubectl_apply(test_file: &str) {
-    let mut command = Command::new("kubectl");
-    command.arg("apply")
-        .arg("-f")
-        .arg(test_file)
-        .current_dir(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests"));
-    if !command.status().unwrap().success() {
-        panic!("Command failed: {:?}", command);
-    }
-}
-
-fn test_main() {
     set_env_var("API_SNAP_PORT", TEST_PORT.to_string());
 
     let (server_handle_sender, server_handle_receiver) = channel();

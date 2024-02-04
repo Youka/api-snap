@@ -29,6 +29,15 @@ jobs:
       - name: Run clippy
         run: cargo clippy
       - name: Create k8s Kind Cluster
-        uses: helm/kind-action@v1
+        uses: helm/kind-action@v1.8.0
+        with:
+          cluster_name: app-testing
+          config: tests/kind_config.yml
+      - name: Create k8s test resources
+        run: |
+          kubectl apply -f tests/k8s_test_namespaces.yml
+          sleep 1
+          kubectl apply -f tests/k8s_test_resources.yml
+          kubectl wait --for=condition=Ready --timeout=60s --all pods --all-namespaces
       - name: Run tests
         run: cargo test
