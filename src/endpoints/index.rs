@@ -17,7 +17,7 @@ static INDEX_HTML: OnceLock<String> = OnceLock::new();
 pub fn configure_index_endpoints(service_config: &mut ServiceConfig) {
     service_config
         .route("/", get().to(get_index_html))
-        .route("/favicon.png", get().to(get_index_favicon));
+        .route("/favicon.ico", get().to(get_index_favicon));
 }
 
 async fn get_index_html() -> impl Responder {
@@ -38,5 +38,5 @@ async fn get_index_html() -> impl Responder {
 async fn get_index_favicon() -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::png())
-        .body(Bytes::from_static(include_bytes!("assets/index-favicon.png")))
+        .body(Bytes::from_static(include_bytes!("../../docs/logo.ico")))
 }

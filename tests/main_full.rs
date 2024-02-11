@@ -38,7 +38,7 @@ fn main_full() {
 
 async fn test_index(http_client: &Client) {
     http_get_check(&http_client, "/").await;
-    http_get_check(&http_client, "/favicon.png").await;
+    http_get_check(&http_client, "/favicon.ico").await;
 }
 
 async fn test_health(http_client: &Client) {

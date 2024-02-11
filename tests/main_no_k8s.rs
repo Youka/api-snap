@@ -40,7 +40,7 @@ fn main_no_k8s() {
 
 async fn test_index(http_client: &Client) {
     http_get_check(&http_client, "/", StatusCode::OK).await;
-    http_get_check(&http_client, "/favicon.png", StatusCode::OK).await;
+    http_get_check(&http_client, "/favicon.ico", StatusCode::OK).await;
 }
 
 async fn test_health(http_client: &Client) {

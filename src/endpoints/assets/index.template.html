@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{{APP_NAME}}</title>
-        <link rel="icon" href="./favicon.png">
+        <title>API Snap</title>
+        <link rel="icon" href="./favicon.ico">
         <style>
             body {
                 text-align: center;
@@ -38,7 +38,14 @@
             }
 
             a img {
-                height: 0.75rem;
+                width: 1rem;
+            }
+
+            a span {
+                display: inline-block;
+                width: 1rem;
+                text-align: center;
+                color: black;
             }
         </style>
     </head>
@@ -58,16 +65,16 @@
             <section>
                 <h2>Status</h2>
                 <ul>
-                    <li><a href="./metrics">&bigstar; Metrics</a></li>
-                    <li><a href="./health/live">&heartsuit; Health (live)</a></li>
-                    <li><a href="./health/ready">&heartsuit; Health (ready)</a></li>
+                    <li><a href="./health/live"><span>&heartsuit;</span> Health (live)</a></li>
+                    <li><a href="./health/ready"><span>&heartsuit;</span> Health (ready)</a></li>
+                    <li><a href="./metrics"><span>&bigstar;</span> Metrics</a></li>
                 </ul>
             </section>
             <section>
                 <h2>Help</h2>
                 <ul>
-                    <li><a href="./kubernetes-setup">&#9432; Kubernetes setup</a></li>
-                    <li><a href="{{APP_HOMEPAGE}}">&trade; Homepage</a></li>
+                    <li><a href="./kubernetes-setup"><span>&#9432;</span> Kubernetes setup</a></li>
+                    <li><a href="{{APP_HOMEPAGE}}"><span>&#8962;</span> Homepage</a></li>
                 </ul>
             </section>
         </main>
