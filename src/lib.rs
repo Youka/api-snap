@@ -44,7 +44,7 @@ pub async fn main(server_handle_sender: Option<Sender<ServerHandle>>) -> IOResul
 
     // Initialize shared web resources
     let metrics = endpoints::metrics::build_prometheus_metrics_middleware()
-        .expect("Initialize prometheus metrics structure");
+        .expect("Initialize prometheus metrics middleware");
     let k8s_client = clients::k8s_client::K8sClient::new().await
         .expect("Initialize kubernetes client");
 
@@ -72,7 +72,7 @@ pub async fn main(server_handle_sender: Option<Sender<ServerHandle>>) -> IOResul
     .run();
 
     if let Some(sender) = server_handle_sender {
-        sender.send(server.handle()).expect("Server handle server still usable");
+        sender.send(server.handle()).expect("Server handle sender still usable");
     }
 
     server.await
