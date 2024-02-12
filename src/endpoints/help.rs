@@ -14,6 +14,7 @@ use super::models::http::{
     Responder,
     ServiceConfig
 };
+use crate::utils::string::process_template;
 
 static KUBERNETES_SETUP_HTML: OnceLock<String> = OnceLock::new();
 
@@ -35,6 +36,12 @@ async fn get_kubernetes_setup_html() -> impl Responder {
                     cmark_options::all()
                 )
             );
-            output
+            process_template(
+                include_str!("assets/help.template.html"),
+                &[
+                    ("TITLE", "Kubernetes setup"),
+                    ("BODY", &output)
+                ]
+            )
         }).as_str())
 }
