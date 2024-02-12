@@ -19,8 +19,8 @@ static KUBERNETES_SETUP_HTML: OnceLock<String> = OnceLock::new();
 
 pub fn configure_help_endpoints(service_config: &mut ServiceConfig) {
     service_config
-        .service(redirect("/help", "/kubernetes-setup"))
-        .route("/kubernetes-setup", get().to(get_kubernetes_setup_html));
+        .service(redirect("/help", "/help/kubernetes-setup"))
+        .route("/help/kubernetes-setup", get().to(get_kubernetes_setup_html));
 }
 
 async fn get_kubernetes_setup_html() -> impl Responder {
