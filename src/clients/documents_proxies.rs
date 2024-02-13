@@ -59,17 +59,17 @@ pub async fn get_service_api_content(k8s_client: &K8sClient, api_type: ApiType, 
     debug!("Cache hit: get_service_api_content, {:?}, {}, {}", api_type, namespace, name);
     http_get(
         &match api_type {
-            ApiType::Asyncapi => k8s_client.get_service_url_by_annotated_port_and_path(
+            ApiType::Asyncapi => k8s_client.get_service_url_by_annotated_port_or_path(
                 namespace, name,
                 config::ASYNCAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
                 config::ASYNCAPI_PATH_ANNOTATION, config::DEFAULT_ASYNCAPI_PATH
             ),
-            ApiType::Graphql => k8s_client.get_service_url_by_annotated_port_and_path(
+            ApiType::Graphql => k8s_client.get_service_url_by_annotated_port_or_path(
                 namespace, name,
                 config::GRAPHQL_PORT_ANNOTATION, config::DEFAULT_API_PORT,
                 config::GRAPHQL_PATH_ANNOTATION, config::DEFAULT_GRAPHQL_PATH
             ),
-            ApiType::Openapi => k8s_client.get_service_url_by_annotated_port_and_path(
+            ApiType::Openapi => k8s_client.get_service_url_by_annotated_port_or_path(
                 namespace, name,
                 config::OPENAPI_PORT_ANNOTATION, config::DEFAULT_API_PORT,
                 config::OPENAPI_PATH_ANNOTATION, config::DEFAULT_OPENAPI_PATH

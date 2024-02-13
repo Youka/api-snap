@@ -61,7 +61,7 @@ impl K8sClient {
             Api::<Service>::all(self.client.clone())
                 .list(&ListParams::default().timeout(self.timeout_seconds)).await?
                 .into_iter()
-                .filter(|service| annotations.iter().any(|annotation| service.annotations().contains_key(*annotation)))
+                .filter(|service| has_service_any_annotation(service, annotations))
                 .map(|service| (
                     service.namespace().unwrap_or(self.client.default_namespace().to_owned()),
                     service.name_any()
@@ -70,7 +70,7 @@ impl K8sClient {
         )
     }
 
-    pub async fn get_service_url_by_annotated_port_and_path(
+    pub async fn get_service_url_by_annotated_port_or_path(
         &self,
         namespace: &str, name: &str,
         port_annotation: &str, default_port: u16,
@@ -78,6 +78,10 @@ impl K8sClient {
     ) -> AnyResult<String> {
         let service = Api::<Service>::namespaced(self.client.clone(), namespace)
             .get(name).await?;
+
+        if !has_service_any_annotation(&service, &[port_annotation, path_annotation]) {
+            bail!("Service '{}/{}' missing annotations", namespace, name)
+        }
 
         let service_annotations = service.annotations();
         let service_spec = service.spec.as_ref()
@@ -106,4 +110,8 @@ impl K8sClient {
         };
         Ok(format!("http://{}:{}{}", host, port, path))
     }
+}
+
+fn has_service_any_annotation(service: &Service, annotations: &[&str]) -> bool {
+    annotations.iter().any(|annotation| service.annotations().contains_key(*annotation))
 }
