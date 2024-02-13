@@ -40,7 +40,7 @@ fn main() {
     println!("cargo:rerun-if-changed=Cargo.toml");
 }
 
-fn get_ui_versions(metadata: &Metadata) -> (&str, &str, &str) {
+fn get_ui_versions<'m>(metadata: &'m Metadata) -> (&'m str, &'m str, &'m str) {
     let third_party = metadata
         .root_package().unwrap()
         .metadata

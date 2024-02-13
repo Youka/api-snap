@@ -38,6 +38,6 @@ jobs:
           kubectl apply -f tests/k8s_test_namespaces.yml
           sleep 1
           kubectl apply -f tests/k8s_test_resources.yml
-          kubectl wait --for=condition=Ready --timeout=60s --all pods --all-namespaces
+          kubectl wait --for=condition=Ready --timeout=10s --all pods --all-namespaces
       - name: Run tests
         run: cargo test

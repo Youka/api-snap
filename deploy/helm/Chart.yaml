@@ -14,7 +14,7 @@ keywords:
 home: https://api-snap.youka.dev
 sources:
     - https://github.com/Youka/api-snap
-icon: https://api-snap.youka.dev/favicon.png
+icon: https://api-snap.youka.dev/favicon.ico
 
 # Chart exclusive
 apiVersion: v2
