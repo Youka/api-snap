@@ -1,0 +1,6 @@
+# Normalize line endings to linux for all text files
+* text=auto eol=lf
+
+# Explicitely define binary files for better diff handling
+*.ico binary
+*.png binary
