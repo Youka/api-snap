@@ -17,14 +17,14 @@ macro_rules! graphql_annotation_prefix { () => { "graphql/" } }
 
 pub const OPENAPI_PORT_ANNOTATION: &str = concat!(openapi_annotation_prefix!(), port_annotation_postfix!());
 pub const OPENAPI_PATH_ANNOTATION: &str = concat!(openapi_annotation_prefix!(), path_annotation_postfix!());
-pub const DEFAULT_OPENAPI_PATH: &str = "/openapi";
 pub const ASYNCAPI_PORT_ANNOTATION: &str = concat!(asyncapi_annotation_prefix!(), port_annotation_postfix!());
 pub const ASYNCAPI_PATH_ANNOTATION: &str = concat!(asyncapi_annotation_prefix!(), path_annotation_postfix!());
-pub const DEFAULT_ASYNCAPI_PATH: &str = "/asyncapi";
 pub const GRAPHQL_PORT_ANNOTATION: &str = concat!(graphql_annotation_prefix!(), port_annotation_postfix!());
 pub const GRAPHQL_PATH_ANNOTATION: &str = concat!(graphql_annotation_prefix!(), path_annotation_postfix!());
-pub const DEFAULT_GRAPHQL_PATH: &str = "/graphql";
 pub const DEFAULT_API_PORT: u16 = 80;
+pub const DEFAULT_OPENAPI_PATH: &str = "/openapi";
+pub const DEFAULT_ASYNCAPI_PATH: &str = "/asyncapi";
+pub const DEFAULT_GRAPHQL_PATH: &str = "/graphql";
 
 // Dynamic
 macro_rules! env_var_prefix { () => { env!("CARGO_PKG_NAME").to_uppercase().replace("-", "_") + "_" } }

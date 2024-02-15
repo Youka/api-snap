@@ -56,16 +56,16 @@ impl K8sClient {
         Ok(self.client.apiserver_version().await?)
     }
 
-    pub async fn get_services_with_any_annotation(&self, annotations: &[&str]) -> AnyResult<Vec<(String, String)>> {
+    pub async fn get_services_with_any_annotation(&self, annotations: &[&str]) -> AnyResult<Vec<ServiceId>> {
         Ok(
             Api::<Service>::all(self.client.clone())
                 .list(&ListParams::default().timeout(self.timeout_seconds)).await?
                 .into_iter()
                 .filter(|service| has_service_any_annotation(service, annotations))
-                .map(|service| (
-                    service.namespace().unwrap_or(self.client.default_namespace().to_owned()),
-                    service.name_any()
-                ))
+                .map(|service| ServiceId {
+                    namespace: service.namespace().unwrap_or(self.client.default_namespace().to_owned()),
+                    name: service.name_any()
+                })
                 .collect()
         )
     }
@@ -114,4 +114,10 @@ impl K8sClient {
 
 fn has_service_any_annotation(service: &Service, annotations: &[&str]) -> bool {
     annotations.iter().any(|annotation| service.annotations().contains_key(*annotation))
+}
+
+#[derive(Clone)]
+pub struct ServiceId {
+    pub namespace: String,
+    pub name: String
 }

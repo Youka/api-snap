@@ -5,7 +5,10 @@ use cached::{
     TimedCache
 };
 use log::debug;
-use super::k8s_client::K8sClient;
+use super::k8s_client::{
+    K8sClient,
+    ServiceId
+};
 use crate::{
     config,
     utils::http::http_get
@@ -24,13 +27,13 @@ pub async fn get_k8s_status(k8s_client: &K8sClient) -> AnyResult<String> {
 }
 
 #[cached(
-    type = "TimedCache<ApiType, Vec<(String, String)>>",
+    type = "TimedCache<ApiType, Vec<ServiceId>>",
     create = "{ TimedCache::with_lifespan(config::get_cache_lifespan().into()) }",
     convert = r#"{ api_type }"#,
     result = true,
     sync_writes = true
 )]
-pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyResult<Vec<(String, String)>> {
+pub async fn get_api_services(k8s_client: &K8sClient, api_type: ApiType) -> AnyResult<Vec<ServiceId>> {
     debug!("Cache hit: get_api_services, {:?}", api_type);
     k8s_client.get_services_with_any_annotation(&match api_type {
         ApiType::Asyncapi => [

@@ -33,7 +33,10 @@ use crate::{
             get_service_api_content,
             ApiType
         },
-        k8s_client::K8sClient
+        k8s_client::{
+            K8sClient,
+            ServiceId
+        }
     },
     config,
     utils::http::extract_http_url
@@ -62,7 +65,7 @@ async fn get_swagger_ui_urls(request: HttpRequest, k8s_client: Data<K8sClient>) 
         Ok(services) => (
             Json(
                 services.into_iter()
-                    .map(|(namespace, name)| ApiUrl {
+                    .map(|ServiceId { namespace, name }| ApiUrl {
                         name: format!("{}/{}", namespace, name),
                         url: format!("{}/document?namespace={}&service={}", base_url, namespace, name)
                     })
