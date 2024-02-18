@@ -53,7 +53,7 @@ deployment:
     image:
       pullSecrets: []
       pullPolicy: IfNotPresent
-      repository: youka/api-snap
+      repository: youkadev/api-snap
       tag: ~
     resources: {}
     #  limits:

@@ -16,15 +16,14 @@ _TODO_
   cargo tarpaulin --out html --output-dir target --engine llvm --skip-clean
   ```
 
-
 ### Build
 * `cargo update`
 * `cargo run`
 * `cargo build --release --no-default-features --locked`
 
 ### Docker
-* `docker build -t youka/api-snap:0.1.0 -f deploy/Dockerfile .`
-* `docker run -it --rm -p 8080:80 --name api-snap youka/api-snap:0.1.0`
+* `docker build -t youkadev/api-snap:0.1.0 -f deploy/Dockerfile .`
+* `docker run -it --rm -p 8080:80 --name api-snap youkadev/api-snap:0.1.0`
 
 ### K8s
 * ```sh
@@ -33,14 +32,6 @@ _TODO_
   ```
 * `helm template deploy/helm`
 * `helm upgrade my-release ./deploy/helm --namespace=api-snap --create-namespace --install --atomic`
-
-### Environment variables
-* `API_SNAP_ADDRESS`
-* `API_SNAP_PORT`
-* `API_SNAP_CLIENT_TIMEOUT`
-* `API_SNAP_CACHE_LIFESPAN`
-* `RUST_LOG`
-* `KUBECONFIG`
 
 ## References
 _TODO_
