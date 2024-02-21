@@ -34,6 +34,9 @@ COPY --from=build /api-snap/release /api-snap
 # Individual directory for running (& finding third-party directory)
 WORKDIR /api-snap
 
+# Install TLS dependencies
+RUN apt-get update && apt-get install -y ca-certificates
+
 # Configure the application for docker
 ENV API_SNAP_ADDRESS=0.0.0.0
 ENV API_SNAP_PORT=80
