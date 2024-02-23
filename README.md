@@ -21,10 +21,6 @@ _TODO_
 * `cargo run`
 * `cargo build --release --no-default-features --locked`
 
-### Docker
-* `docker build -t youkadev/api-snap:0.1.0 -f deploy/Dockerfile .`
-* `docker run -it --rm -p 8080:80 --name api-snap youkadev/api-snap:0.1.0`
-
 ### K8s
 * ```sh
   kubectl apply -f tests/k8s_test_namespaces.yml
