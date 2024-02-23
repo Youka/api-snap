@@ -26,8 +26,6 @@ _TODO_
   kubectl apply -f tests/k8s_test_namespaces.yml
   kubectl apply -f tests/k8s_test_resources.yml
   ```
-* `helm template deploy/helm`
-* `helm upgrade my-release ./deploy/helm --namespace=api-snap --create-namespace --install --atomic`
 
 ## References
 _TODO_

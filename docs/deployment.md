@@ -41,4 +41,27 @@ docker push youkadev/api-snap
 Do this for all new tags (in our example we also had `youkadev/api-snap:0.1.0`).
 
 ## Helm
-_TODO_
+You need [helm](https://helm.sh/) to package & index the chart and a **webserver** for sharing.
+
+First package the chart:
+```sh
+helm package deploy/helm --destination tmp
+```
+A file `api-snap-<VERSION>.tgz` should be created in temporary directory `tmp`.
+
+Next transform the directory to a helm repository by creating an index:
+```sh
+helm repo index tmp
+```
+
+Move the directory content to a static files webserver (for example `https://charts.youka.dev`). Share the url as your helm chart repository for potential users.
+
+Users can now add the repository to their registry:
+```sh
+helm repo add youkadev https://charts.youka.dev
+```
+
+With the repository in scope the chart is installable to a cluster:
+```sh
+helm upgrade my-api-snap api-snap --namespace=api-snap --create-namespace --install --atomic
+```
