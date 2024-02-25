@@ -63,5 +63,5 @@ helm repo add youkadev https://charts.youka.dev
 
 Now the chart is installable to a cluster (preferrable in its own namespace):
 ```sh
-helm upgrade api-snap youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
+helm upgrade latest youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
 ```

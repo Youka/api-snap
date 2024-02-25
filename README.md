@@ -17,7 +17,7 @@ See [ArtifactHUB](https://artifacthub.io/packages/helm/youkadev/api-snap/) how t
 For a simple installation just two commands are required:
 ```sh
 helm repo add youkadev https://charts.youka.dev
-helm upgrade api-snap youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
+helm upgrade latest youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
 ```
 
 **Preview:** [User interfaces](./docs/user_interfaces.md)
@@ -29,6 +29,9 @@ helm upgrade api-snap youkadev/api-snap --namespace=api-snap --create-namespace 
 ## Development
 * How to work on this project: [Development](./docs/development.md)
 * How to deploy artifacts of this project: [Deployment](./docs/deployment.md)
+
+## Troubleshooting
+See [Troubleshooting](./docs/troubleshooting.md).
 
 ## Contributing
 See [CONTRIBUTING](./CONTRIBUTING.md).
