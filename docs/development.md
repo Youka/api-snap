@@ -7,7 +7,7 @@ This document mentions basic tooling and major commands to work with it.
   The recommended IDE (but optional). Also install **recommended plugins**.
 * [Rust](https://www.rust-lang.org/tools/install)  
   Install the rust toolchain with **rustup** including the component `clippy`.
-* [Docker](https://www.docker.com/products/docker-desktop/)  
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)  
   For containerization and kubernetes install this convenient toolkit.
 * [Helm](https://helm.sh/)  
   Install this small tool to apply & package charts for kubernetes deployment.

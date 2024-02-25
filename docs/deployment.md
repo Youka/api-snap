@@ -9,7 +9,7 @@ Both are required for users to easily install the application in their infrastru
 Deployment resources are located in directory [/deploy/](../deploy/).
 
 ## Docker
-You need [docker](https://www.docker.com/products/docker-desktop/) to build the image and an account on [docker hub](https://hub.docker.com/) for sharing.
+You need [docker](https://www.docker.com/get-started/) to build the image and an account on [docker hub](https://hub.docker.com/) for sharing.
 
 First build the image with fitting tags:
 ```sh
@@ -32,13 +32,13 @@ docker login -u youkadev -p dckr_pat_C2...
 * `youkadev` is the username and must be the prefix of the docker image
 * `dckr_pat_C2...` is the (truncated) token used as password
 
-Create a repository with description in docker hub. The name should equal your image (for this example `api-snap` with `youkadev` as account).
+Create a repository with description in docker hub. The name should equal your image (for this project `api-snap` with `youkadev` as account).
 
 Now you can push the image up to docker hub:
 ```sh
 docker push youkadev/api-snap
 ```
-Do this for all new tags (in our example we also had `youkadev/api-snap:0.1.0`).
+Do this for all new tags (in our project we also had `youkadev/api-snap:0.1.0`).
 
 ## Helm
 You need [helm](https://helm.sh/) to package & index the chart and a **webserver** for sharing.
@@ -54,14 +54,14 @@ Next transform the directory to a helm repository by creating an index:
 helm repo index tmp
 ```
 
-Move the directory content to a static files webserver (for example `https://charts.youka.dev`). Share the url as your helm chart repository for potential users.
+Move the directory content to a static files webserver (for this project `https://charts.youka.dev`). Share the url as your helm chart repository for potential users (this project uses [ArtifactHub](https://artifacthub.io/)).
 
 Users can now add the repository to their registry:
 ```sh
 helm repo add youkadev https://charts.youka.dev
 ```
 
-With the repository in scope the chart is installable to a cluster:
+Now the chart is installable to a cluster (preferrable in its own namespace):
 ```sh
-helm upgrade my-api-snap youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
+helm upgrade api-snap youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
 ```
