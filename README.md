@@ -11,7 +11,30 @@
 [![GitHub Last Commit](https://badgen.net/github/last-commit/youka/api-snap?icon=github&label=Last%20Commit)](https://github.com/Youka/api-snap/commits)
 
 ## Quickstart
-_TODO_
+_API Snap is mainly used by kubernetes cluster administrators. Experience is expected._  
+See [ArtifactHUB](https://artifacthub.io/packages/helm/youkadev/api-snap/) how to add the helm repository and customize chart installations.
 
-## References
-_TODO_
+For a simple installation just two commands are required:
+```sh
+helm repo add youkadev https://charts.youka.dev
+helm upgrade api-snap youkadev/api-snap --namespace=api-snap --create-namespace --install --atomic
+```
+
+**Preview:** [User interfaces](./docs/user_interfaces.md)
+
+## Configuration
+* How to use the application: [Kubernetes setup](./docs/kubernetes_setup.md)
+* How to configure the application: [Runtime configuration](./docs/runtime_configuration.md)
+
+## Development
+* How to work on this project: [Development](./docs/development.md)
+* How to deploy artifacts of this project: [Deployment](./docs/deployment.md)
+
+## Contributing
+See [CONTRIBUTING](./CONTRIBUTING.md).
+
+## License
+See [LICENSE](./LICENSE).
+
+## Changelog
+See [CHANGELOG](./CHANGELOG.md).
