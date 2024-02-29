@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "EditorConfig.EditorConfig",
-    "asciidoctor.asciidoctor-vscode",
     "rust-lang.rust-analyzer",
     "tamasfe.even-better-toml",
     "ms-kubernetes-tools.vscode-kubernetes-tools"
