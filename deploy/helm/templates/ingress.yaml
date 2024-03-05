@@ -21,7 +21,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "app.name" . }}
+                name: {{ include "app.name" . }}-svc
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
