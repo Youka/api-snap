@@ -2,7 +2,7 @@
 
 [package]
 name = "api-snap"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.74"
 description = "An application which collects API documents by kubernetes service discovery and displays them in a web interface."

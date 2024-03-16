@@ -2,8 +2,8 @@
 
 # Chart / app (sync with Cargo.toml)
 name: api-snap
-version: 0.1.0
-appVersion: "0.1.0"
+version: 0.1.1
+appVersion: 0.1.1
 description: An application which collects API documents by kubernetes service discovery and displays them in a web interface.
 keywords:
     - kubernetes
