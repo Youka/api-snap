@@ -4,10 +4,10 @@
 |---|---|
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/youkadev)](https://artifacthub.io/packages/helm/youkadev/api-snap/)
-[![Docker Size](https://badgen.net/docker/size/youkadev/api-snap?icon=docker&label=Docker%20Size)](https://hub.docker.com/r/youkadev/api-snap)
-[![GitHub Latest Tag](https://badgen.net/github/tag/youka/api-snap?icon=github&label=Latest%20Tag&color=black)](https://github.com/youka/api-snap/tags)  
-[![GitHub License](https://badgen.net/github/license/youka/api-snap?icon=github&label=License&color=green)](./LICENSE)
-[![GitHub Last Commit](https://badgen.net/github/last-commit/youka/api-snap?icon=github&label=Last%20Commit)](https://github.com/Youka/api-snap/commits)
+[![Docker Image Size](https://img.shields.io/docker/image-size/youkadev/api-snap?logo=docker&label=Docker%20size&cacheSeconds=3600)](https://hub.docker.com/r/youkadev/api-snap)
+[![GitHub Tag](https://img.shields.io/github/v/tag/youka/api-snap?logo=github&color=black&cacheSeconds=3600)](https://github.com/youka/api-snap/tags)  
+[![GitHub License](https://img.shields.io/github/license/youka/api-snap?logo=github&label=License&cacheSeconds=3600)](./LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/youka/api-snap?logo=github&label=Last%20commit&cacheSeconds=3600)](https://github.com/Youka/api-snap/commits)
 [![GitHub Actions](https://github.com/youka/api-snap/actions/workflows/main.yml/badge.svg)](https://github.com/Youka/api-snap/actions)
 [![codecov](https://codecov.io/github/Youka/api-snap/graph/badge.svg?token=H8DLDKIYI7)](https://codecov.io/github/Youka/api-snap)
 
