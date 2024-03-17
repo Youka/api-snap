@@ -13,9 +13,9 @@ You need [docker](https://www.docker.com/get-started/) to build the image and an
 
 First build the image with fitting tags:
 ```sh
-docker build -t youkadev/api-snap -t youkadev/api-snap:0.1.1 -f deploy/Dockerfile .
+docker build -t youkadev/api-snap -t youkadev/api-snap:0.2.0 -f deploy/Dockerfile .
 ```
-_(Replace `0.1.1` with the current application version.)_
+_(Replace `0.2.0` with the current application version.)_
 
 The image should be tested:
 * Run as temporary container:
@@ -38,7 +38,7 @@ Now you can push the image up to docker hub:
 ```sh
 docker push youkadev/api-snap
 ```
-Do this for all new tags (in our project we also had `youkadev/api-snap:0.1.1`).
+Do this for all new tags (in our project we also had `youkadev/api-snap:0.2.0`).
 
 ## Helm
 You need [helm](https://helm.sh/) to package & index the chart and a **webserver** for sharing.

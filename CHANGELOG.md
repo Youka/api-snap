@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.0
+_TBD_
+
 ## 0.1.1
 * renamed k8s service with postfix '-svc'
 * updated dependencies (+ fixed vulnerabilities)
