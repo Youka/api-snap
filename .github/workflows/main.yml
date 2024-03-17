@@ -28,6 +28,8 @@ jobs:
           cache-directories: third-party
       - name: Run clippy
         run: cargo clippy
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
       - name: Create k8s Kind Cluster
         uses: helm/kind-action@v1.8.0
         with:
@@ -40,4 +42,9 @@ jobs:
           kubectl apply -f tests/k8s_test_resources.yml
           kubectl wait --for=condition=Ready --timeout=10s --all pods --all-namespaces
       - name: Run tests
-        run: cargo test
+        run: cargo tarpaulin --out xml
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true

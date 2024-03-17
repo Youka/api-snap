@@ -18,3 +18,4 @@ tmp/
 # Output
 /target/
 /third-party/
+cobertura.xml

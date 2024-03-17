@@ -4,11 +4,12 @@
 |---|---|
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/youkadev)](https://artifacthub.io/packages/helm/youkadev/api-snap/)
-[![Docker Size](https://badgen.net/docker/size/youkadev/api-snap?icon=docker&label=Docker%20Size&color=blue)](https://hub.docker.com/r/youkadev/api-snap)
+[![Docker Size](https://badgen.net/docker/size/youkadev/api-snap?icon=docker&label=Docker%20Size)](https://hub.docker.com/r/youkadev/api-snap)
 [![GitHub Latest Tag](https://badgen.net/github/tag/youka/api-snap?icon=github&label=Latest%20Tag&color=black)](https://github.com/youka/api-snap/tags)  
 [![GitHub License](https://badgen.net/github/license/youka/api-snap?icon=github&label=License&color=green)](./LICENSE)
-[![GitHub Actions](https://github.com/youka/api-snap/actions/workflows/main.yml/badge.svg)](https://github.com/Youka/api-snap/actions)
 [![GitHub Last Commit](https://badgen.net/github/last-commit/youka/api-snap?icon=github&label=Last%20Commit)](https://github.com/Youka/api-snap/commits)
+[![GitHub Actions](https://github.com/youka/api-snap/actions/workflows/main.yml/badge.svg)](https://github.com/Youka/api-snap/actions)
+[![codecov](https://codecov.io/github/Youka/api-snap/graph/badge.svg?token=H8DLDKIYI7)](https://codecov.io/github/Youka/api-snap)
 
 **ToC:**
 * [Quickstart](#quickstart)
@@ -135,7 +136,7 @@ This document mentions basic tooling and major commands to work with it.
 * Install code coverage tool:  
   `cargo install cargo-tarpaulin`
 * Report code coverage:  
-  `cargo tarpaulin --out html --output-dir target --engine llvm --skip-clean`
+  `cargo tarpaulin --out html --output-dir target --engine llvm`
 * Render chart templates:  
   `helm template deploy/helm`
 
