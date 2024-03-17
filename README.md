@@ -21,7 +21,6 @@
   * [Tools](#tools)
   * [Commands](#commands)
 * [Deployment](#deployment)
-* [Troubleshooting](#troubleshooting)
 * [Contributung](#contributing)
 * [License](#license)
 * [Changelog](#changelog)
