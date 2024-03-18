@@ -16,10 +16,7 @@ use kube::{
     ResourceExt
 };
 use log::debug;
-use crate::{
-    config,
-    utils::string::LoggedParse
-};
+use crate::utils::string::LoggedParse;
 
 #[derive(Clone)]
 pub struct K8sClient {
@@ -28,8 +25,14 @@ pub struct K8sClient {
     timeout_seconds: u32
 }
 
+#[derive(Clone)]
+pub struct ServiceId {
+    pub namespace: String,
+    pub name: String
+}
+
 impl K8sClient {
-    pub async fn new() -> AnyResult<Self> {
+    pub async fn new(timeout_seconds: u32) -> AnyResult<Self> {
         let (mut config, incluster) = match Config::incluster() {
             Ok(incluster_config) => (incluster_config, true),
             Err(err) => {
@@ -48,7 +51,7 @@ impl K8sClient {
         Ok(Self {
             client: Client::try_from(config)?,
             incluster,
-            timeout_seconds: config::get_client_timeout().into()
+            timeout_seconds
         })
     }
 
@@ -114,10 +117,4 @@ impl K8sClient {
 
 fn has_service_any_annotation(service: &Service, annotations: &[&str]) -> bool {
     annotations.iter().any(|annotation| service.annotations().contains_key(*annotation))
-}
-
-#[derive(Clone)]
-pub struct ServiceId {
-    pub namespace: String,
-    pub name: String
 }

@@ -45,7 +45,7 @@ pub async fn main(server_handle_sender: Option<Sender<ServerHandle>>) -> IOResul
     // Initialize shared web resources
     let metrics = endpoints::metrics::build_prometheus_metrics_middleware()
         .expect("Initialize prometheus metrics middleware");
-    let k8s_client = clients::k8s_client::K8sClient::new().await
+    let k8s_client = clients::k8s_client::K8sClient::new(config::get_client_timeout().into()).await
         .expect("Initialize kubernetes client");
 
     // Start web server
